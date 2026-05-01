@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ágora Social - Rodrigo Hernández-Cervantes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f7fa;
+            --text: #000000;
+            --accent: #055edf;
+            --sidebar-w: 220px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        #canvas-agora {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            width: var(--sidebar-w);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            z-index: 100;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            transform: translateX(-195px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sidebar:hover { transform: translateX(0); }
+        .phi-logo { width: 22px; opacity: 0.7; margin-bottom: 1rem; }
+        .nav-links { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .nav-links a { text-decoration: none; color: var(--text); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 5rem 2rem 5rem 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 { font-weight: 800; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 3rem; letter-spacing: -0.03em; }
+
+        .agora-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 0.8fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .section-box {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            min-height: 400px;
+        }
+
+        .label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        /* --- SPOTIFY MODERNO --- */
+        .spotify-card {
+            background: #1DB954;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.3s;
+        }
+        .spotify-card:hover { transform: translateY(-3px); }
+        .spotify-card span { font-weight: 800; font-size: 0.9rem; }
+
+        @media (max-width: 1200px) { .agora-layout { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 768px) {
+            .agora-layout { grid-template-columns: 1fr; }
+            .container { padding: 5rem 1.5rem 5rem 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-agora"></canvas>
+
+    <nav class="sidebar">
+        <img src="phi.png" alt="Phi" class="phi-logo">
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="bio.html">Bio</a></li>
+            <li><a href="publicaciones.html">Publicaciones</a></li>
+            <li><a href="agora.html" style="color: var(--accent);">Ágora Social</a></li>
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="archivo.html">Archivo</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Ágora Social</h1>
+
+        <div class="agora-layout">
+            <!-- COLUMNA 1: SUBSTACK -->
+            <div class="section-box">
+                <span class="label">Escritos (Substack)</span>
+                <div id="substack-feed-embed"></div>
+                <script>
+                  window.SubstackFeedWidget = {
+                    substackRange: "eigenroi.substack.com",
+                    posts: 3,
+                    colors: { primary: "#000000", secondary: "#666666", background: "transparent" }
+                  };
+                </script>
+                <script src="https://substackapi.com/embeds/feed.js" async></script>
+            </div>
+
+            <!-- COLUMNA 2: X (TWITTER) -->
+            <div class="section-box">
+                <span class="label">Pulso (X / Twitter)</span>
+                <!-- Nota: Este feed solo cargará correctamente cuando la página esté en un servidor web -->
+                <a class="twitter-timeline" 
+                   data-height="600" 
+                   data-chrome="transparent nofooter noheader" 
+                   href="https://twitter.com/eigenroi?ref_src=twsrc%5Etfw">
+                   Cargando tweets...
+                </a> 
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+
+            <!-- COLUMNA 3: SPOTIFY -->
+            <div class="section-box">
+                <span class="label">Curación Musical</span>
+                <a href="https://open.spotify.com/user/22yqun6lby7jtrbvfaiojtdva" target="_blank" class="spotify-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" width="30" alt="Spotify">
+                    <span>EXPLORAR TODAS MIS PLAYLISTS ↗</span>
+                </a>
+                <p style="font-size: 0.8rem; color: #666; margin-top: 1.5rem; line-height: 1.4;">
+                    Accede directamente a mi biblioteca musical y colecciones curadas.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* Lógica del Random Walk (Amarillo #fffb76) corregida */
+        (function(){
+            const canvas = document.getElementById('canvas-agora');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            
+            class AgoraWalk {
+                constructor() {
+                    this.x = 0; this.y = 0;
+                    this.trail = [];
+                    this.maxTrail = 4000;
+                    this.stepSize = 5;
+                    this.color = [255, 251, 118];
+                }
+                init(w, h) {
+                    this.x = w * 0.5; this.y = h * 0.5;
+                    this.trail = [{x: this.x, y: this.y, jump: false}];
+                    for(let i=0; i<1500; i++) this.updateInternal(w, h);
+                }
+                updateInternal(w, h) {
+                    const angle = Math.random() * Math.PI * 2;
+                    let nextX = this.x + Math.cos(angle) * this.stepSize;
+                    let nextY = this.y + Math.sin(angle) * this.stepSize;
+                    let jump = false;
+                    if (nextX < 0) { nextX = w; jump = true; }
+                    else if (nextX > w) { nextX = 0; jump = true; }
+                    if (nextY < 0) { nextY = h; jump = true; }
+                    else if (nextY > h) { nextY = 0; jump = true; }
+                    this.x = nextX; this.y = nextY;
+                    this.trail.push({x: this.x, y: this.y, jump: jump});
+                    if(this.trail.length > this.maxTrail) this.trail.shift();
+                }
+                update(w, h) { for(let i=0; i<15; i++) this.updateInternal(w, h); }
+                draw(ctx, w, h) {
+                    ctx.fillStyle = '#f4f7fa';
+                    ctx.fillRect(0, 0, w, h);
+                    if(this.trail.length < 2) return;
+                    ctx.beginPath();
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, 0.35)`;
+                    ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                    for(let i=1; i<this.trail.length; i++) {
+                        const p = this.trail[i];
+                        if (p.jump) ctx.moveTo(p.x, p.y);
+                        else ctx.lineTo(p.x, p.y);
+                    }
+                    ctx.stroke();
+                    ctx.fillStyle = `rgb(${this.color[0]}, ${this.color[1]}, ${this.color[2]})`;
+                    ctx.beginPath(); ctx.arc(this.x, this.y, 3, 0, Math.PI*2); ctx.fill();
+                }
+            }
+
+            const walker = new AgoraWalk();
+            function handleResize() {
+                width = window.innerWidth; height = window.innerHeight;
+                canvas.width = width; canvas.height = height;
+                walker.init(width, height);
+            }
+            function loop() {
+                walker.update(width, height);
+                walker.draw(ctx, width, height);
+                requestAnimationFrame(loop);
+            }
+            window.addEventListener('resize', handleResize);
+            handleResize();
+            loop();
+        })();
+    </script>
+</body>
+</html>

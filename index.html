@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Rodrigo Hernández-Cervantes - Inicio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: #f4f7fa;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 0;
+        }
+
+        .vignette {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            background: radial-gradient(circle at center, transparent 40%, rgba(230, 236, 240, 0.7) 100%);
+            pointer-events: none;
+        }
+
+        #home {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; 
+        }
+
+        .flower {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- NOMBRE EN UNA SOLA LÍNEA Y NEGRO --- */
+        .name-center {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            cursor: pointer;
+            pointer-events: auto; 
+            padding: 20px;
+            white-space: nowrap; /* Fuerza una sola línea */
+        }
+        
+        .name-center h1 {
+            font-weight: 800; 
+            font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+            letter-spacing: -0.02em;
+            color: #000000; /* Letra Negra */
+            line-height: 1;
+            transition: transform 0.4s ease;
+        }
+        
+        .name-center:hover h1 {
+            transform: scale(1.02);
+        }
+
+        /* --- PÉTALOS --- */
+        .petal {
+            position: absolute;
+            width: 150px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.4s cubic-bezier(0.34,1.56,0.64,1), transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+            pointer-events: none;
+            z-index: 30;
+        }
+        
+        .petal.open {
+            opacity: 1;
+            transform: scale(1) translate(var(--tx), var(--ty));
+            pointer-events: auto;
+        }
+        
+        .petal.closing {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Radio optimizado para el nombre largo */
+        .petal[data-i="0"]{--tx:0px;   --ty:-130px; transition-delay:.00s;}
+        .petal[data-i="1"]{--tx:190px; --ty:-60px;  transition-delay:.04s;}
+        .petal[data-i="2"]{--tx:190px; --ty: 60px;  transition-delay:.08s;}
+        .petal[data-i="3"]{--tx:0px;   --ty: 130px; transition-delay:.12s;}
+        .petal[data-i="4"]{--tx:-190px;--ty: 60px;  transition-delay:.16s;}
+        .petal[data-i="5"]{--tx:-190px;--ty:-60px;  transition-delay:.20s;}
+
+        .petal-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #000000; /* Letra Negra */
+            transition: color 0.3s, transform 0.3s;
+            text-shadow: 0px 0px 10px rgba(255,255,255,0.8);
+        }
+        
+        .petal:hover .petal-label {
+            color: #055edf; /* Cambio a azul de la paleta en hover */
+            transform: scale(1.1);
+        }
+
+        @media(max-width:600px){
+            .flower { width: 100%; height: 400px; }
+            .name-center h1 { font-size: 1.2rem; }
+            .petal[data-i="0"]{--tx:0px;   --ty:-110px;}
+            .petal[data-i="1"]{--tx:110px; --ty:-50px;}
+            .petal[data-i="2"]{--tx:110px; --ty: 50px;}
+            .petal[data-i="3"]{--tx:0px;   --ty: 110px;}
+            .petal[data-i="4"]{--tx:-110px;--ty: 50px;}
+            .petal[data-i="5"]{--tx:-110px;--ty:-50px;}
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="vignette"></div>
+
+    <div id="home">
+        <div class="flower" id="flower">
+            <a class="petal" data-i="0" href="bio.html"><span class="petal-label">Bio</span></a>
+            <a class="petal" data-i="1" href="publicaciones.html"><span class="petal-label">Publicaciones</span></a>
+            <a class="petal" data-i="2" href="agora.html"><span class="petal-label">Ágora Social</span></a>
+            <a class="petal" data-i="3" href="proyectos.html"><span class="petal-label">Proyectos</span></a>
+            <a class="petal" data-i="4" href="contacto.html"><span class="petal-label">Contacto</span></a>
+            <a class="petal" data-i="5" href="archivo.html"><span class="petal-label">Archivo</span></a>
+            
+            <div class="name-center" id="nameCenter">
+                <h1>Rodrigo Hernández-Cervantes</h1>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- LÓGICA DEL MENÚ ---
+        const nameCenter = document.getElementById('nameCenter');
+        const petals = document.querySelectorAll('.petal');
+        let hoverTimeout; 
+
+        function openPetals(){
+            clearTimeout(hoverTimeout); 
+            petals.forEach(p => { p.classList.remove('closing'); p.classList.add('open'); });
+        }
+
+        function closePetals(){
+            petals.forEach(p => { p.classList.add('closing'); p.classList.remove('open'); });
+        }
+
+        nameCenter.addEventListener('mouseenter', openPetals);
+        nameCenter.addEventListener('mouseleave', () => { hoverTimeout = setTimeout(closePetals, 300); });
+
+        petals.forEach(p => {
+            p.addEventListener('mouseenter', openPetals);
+            p.addEventListener('mouseleave', () => { hoverTimeout = setTimeout(closePetals, 300); });
+        });
+
+        // --- LÓGICA DE RANDOM WALK ---
+        (function(){
+            const canvas = document.getElementById('canvas');
+            let ctx = canvas.getContext('2d');
+            let width, height;
+            
+            class RandomWalk {
+                constructor(w, h) {
+                    this.walkers = [];
+                    this.numWalkers = 3; 
+                    this.maxTrail = 6000; 
+                    this.stepSize = 5; 
+                    this.colors = [
+                        [121, 255, 156], // Verde (#79ff9c)
+                        [255, 251, 118], // Amarillo (#fffb76)
+                        [75, 183, 255]   // Azulito (#4bb7ff)
+                    ];
+                    this.init(w, h);
+                }
+                
+                init(w, h) {
+                    this.walkers = [];
+                    for(let i=0; i<this.numWalkers; i++) {
+                        this.walkers.push({
+                            x: w/2 + (Math.random() - 0.5) * 200,
+                            y: h/2 + (Math.random() - 0.5) * 200,
+                            trail: [],
+                            color: this.colors[i]
+                        });
+                    }
+                    for(let step = 0; step < 4000; step++) { this.updateInternal(w, h); }
+                }
+                
+                resize(w, h) { this.width = w; this.height = h; }
+                
+                updateInternal(w, h) {
+                    for(let walker of this.walkers) {
+                        const angle = Math.random() * Math.PI * 2;
+                        let newX = walker.x + Math.cos(angle) * this.stepSize;
+                        let newY = walker.y + Math.sin(angle) * this.stepSize;
+                        if (newX < 10) newX = 10 + Math.random() * 20;
+                        if (newX > w - 10) newX = w - 10 - Math.random() * 20;
+                        if (newY < 10) newY = 10 + Math.random() * 20;
+                        if (newY > h - 10) newY = h - 10 - Math.random() * 20;
+                        walker.x = newX; walker.y = newY;
+                        walker.trail.push({x: walker.x, y: walker.y});
+                        if(walker.trail.length > this.maxTrail) walker.trail.shift();
+                    }
+                }
+                
+                update(w, h) {
+                    for(let i=0; i < 25; i++) { this.updateInternal(w, h); }
+                }
+                
+                draw(ctx, w, h) {
+                    ctx.fillStyle = '#f4f7fa'; 
+                    ctx.fillRect(0, 0, w, h);
+                    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                    for(let walker of this.walkers) {
+                        if(walker.trail.length < 2) continue;
+                        const rgb = walker.color;
+                        ctx.beginPath();
+                        ctx.lineWidth = 2.0;
+                        ctx.moveTo(walker.trail[0].x, walker.trail[0].y);
+                        for(let i=1; i<walker.trail.length; i++) { ctx.lineTo(walker.trail[i].x, walker.trail[i].y); }
+                        ctx.strokeStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.3)`;
+                        ctx.stroke();
+                        ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+                        ctx.beginPath(); ctx.arc(walker.x, walker.y, 4, 0, Math.PI*2); ctx.fill();
+                    }
+                }
+            }
+            
+            let simulation = null;
+            function handleResize() {
+                width = window.innerWidth; height = window.innerHeight;
+                canvas.width = width; canvas.height = height;
+                if (simulation) simulation.resize(width, height);
+            }
+            function animate() {
+                if (!simulation) return;
+                simulation.update(width, height); 
+                simulation.draw(ctx, width, height);
+                requestAnimationFrame(animate);
+            }
+            handleResize();
+            simulation = new RandomWalk(width, height);
+            window.addEventListener('resize', handleResize);
+            requestAnimationFrame(animate);
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archivo - Rodrigo Hernández-Cervantes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f7fa;
+            --text: #000000;
+            --accent: #8a2be2; /* Violeta para Archivo */
+            --sidebar-w: 220px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- FONDO DINÁMICO --- */
+        #canvas-archive {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            width: var(--sidebar-w);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            z-index: 100;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            transform: translateX(-195px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sidebar:hover { transform: translateX(0); }
+        .phi-logo { width: 22px; opacity: 0.7; margin-bottom: 1rem; }
+        .nav-links { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .nav-links a { text-decoration: none; color: var(--text); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* --- LAYOUT PRINCIPAL --- */
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 5rem 5% 5rem 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 { 
+            font-weight: 800; 
+            font-size: clamp(2.5rem, 8vw, 4rem); 
+            letter-spacing: -0.05em; 
+            margin-bottom: 3rem;
+        }
+
+        /* --- MOSAICO DE FOTOS --- */
+        .ig-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .ig-thumb {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            cursor: pointer;
+            background: #111;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .ig-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(15%) contrast(1.05);
+            transition: filter 0.4s ease, transform 0.4s ease;
+        }
+
+        .ig-thumb:hover img {
+            filter: grayscale(0%) contrast(1);
+            transform: scale(1.05);
+        }
+
+        .ig-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .ig-thumb:hover .ig-thumb-overlay {
+            background: rgba(0,0,0,0.5);
+        }
+
+        .ig-thumb-overlay span {
+            color: #fff;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            font-weight: 700;
+            transform: translateY(10px);
+        }
+
+        .ig-thumb:hover .ig-thumb-overlay span {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- MODAL OSCURO --- */
+        .ig-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .ig-modal.open { display: flex; }
+
+        .ig-modal-inner {
+            background: #161616;
+            border: 1px solid #333;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            max-height: 85vh;
+            overflow: hidden;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .ig-modal-img {
+            flex: 1.5;
+            min-width: 0;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ig-modal-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            max-height: 85vh;
+        }
+
+        .ig-modal-info {
+            width: 300px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #333;
+            overflow-y: auto;
+            background: #161616;
+        }
+
+        .ig-modal-body {
+            padding: 24px;
+            flex: 1;
+        }
+
+        .ig-modal-date {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .ig-modal-caption {
+            font-size: 0.95rem;
+            color: #d1d1d1;
+            line-height: 1.6;
+        }
+
+        .ig-modal-close {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+        .ig-modal-close:hover { opacity: 1; }
+
+        .ig-modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.6);
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            width: 44px;
+            height: 70px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            transition: opacity 0.2s, background 0.2s;
+            z-index: 1001;
+        }
+        .ig-modal-nav:hover { opacity: 1; background: rgba(0,0,0,0.9); }
+        .ig-modal-prev { left: 0; border-radius: 0 6px 6px 0; }
+        .ig-modal-next { right: 300px; border-radius: 6px 0 0 6px; }
+
+        @media (max-width: 800px) {
+            .container { padding: 5rem 5% 5rem 60px; }
+            .ig-modal-inner { flex-direction: column; }
+            .ig-modal-info { width: 100%; border-left: none; border-top: 1px solid #333; max-height: 200px; }
+            .ig-modal-next { right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-archive"></canvas>
+
+    <nav class="sidebar">
+        <img src="phi.png" alt="Phi" class="phi-logo">
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="bio.html">Bio</a></li>
+            <li><a href="publicaciones.html">Publicaciones</a></li>
+            <li><a href="agora.html">Ágora Social</a></li>
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+            <li><a href="archivo.html" style="color: var(--accent);">Archivo</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Archivo</h1>
+        
+        <main>
+            <div class="ig-grid">
+                <!-- 10 FOTOS -->
+                <div class="ig-thumb" onclick="openModal(0)">
+                    <img alt="" src="fotos/momingo.jpg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(1)">
+                    <img alt="" src="fotos/1000172135.jpg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(2)">
+                    <img alt="" src="fotos/20260414_160725.jpg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(3)">
+                    <img alt="" src="fotos/20260403_161656.jpg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(4)">
+                    <img alt="" src="fotos/WhatsApp Image 2026-03-29 at 12.50.35 PM.jpeg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(5)">
+                    <img alt="" src="fotos/photo_5064704407466871714_y.jpg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(6)">
+                    <img alt="" src="fotos/WhatsApp Image 2026-03-29 at 12.51.14 PM.jpeg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(7)">
+                    <img alt="" src="fotos/dream.jpeg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(8)">
+                    <img alt="" src="fotos/tecnocrat.jpeg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+                <div class="ig-thumb" onclick="openModal(9)">
+                    <img alt="" src="fotos/cobossex.jpeg"/>
+                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="ig-modal" id="igModal">
+        <button class="ig-modal-close" onclick="closeModal()">×</button>
+        <div class="ig-modal-inner">
+            <button class="ig-modal-nav ig-modal-prev" onclick="navigate(-1)">←</button>
+            <div class="ig-modal-img">
+                <img alt="" id="modalImg" src=""/>
+            </div>
+            <button class="ig-modal-nav ig-modal-next" onclick="navigate(1)">→</button>
+            <div class="ig-modal-info">
+                <div class="ig-modal-body">
+                    <div class="ig-modal-date" id="modalDate"></div>
+                    <div class="ig-modal-caption" id="modalCaption"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array reducido a las 10 fotos solicitadas
+        const fotos = [
+            { src: 'fotos/momingo.jpg', date: '27 de abril, 2026', caption: 'Rodrigo flirting' },
+            { src: 'fotos/1000172135.jpg', date: '22 de abril, 2026', caption: 'Pinche universidad chingona (podemos pistear en la calle)' },
+            { src: 'fotos/20260414_160725.jpg', date: '14 de abril, 2026', caption: 'Yemaina moment' },
+            { src: 'fotos/20260403_161656.jpg', date: '4 de abril, 2026', caption: 'Ayer me comí eso yo solo xD' },
+            { src: 'fotos/WhatsApp Image 2026-03-29 at 12.50.35 PM.jpeg', date: '29 de marzo, 2026', caption: 'Con la Xime en sala Neza luego de escuchar El mandarín milagroso, un día muy bonito verdad de Dios.' },
+            { src: 'fotos/photo_5064704407466871714_y.jpg', date: '29 de marzo, 2026', caption: 'Sometimes I would have liked to be a musician' },
+            { src: 'fotos/WhatsApp Image 2026-03-29 at 12.51.14 PM.jpeg', date: '21 de marzo, 2026', caption: '3 años de amistad y estoy seguro que esta madre es una de nuestras 3 únicas selfies. Love you, bitch ass' },
+            { src: 'fotos/dream.jpeg', date: '20 de marzo, 2026', caption: 'Imagine this: Entras a las 9 a este edificio, eres Lic., andas buscando becas para irte a hacer el MSc a Europa, ganas 32 mil varos al mes y tienes una novia que estudia en una STEM. Por las tardes eres adjunto y repruebas pendejos; todos los viernes sales a vivir la vida nocturna, rentas con tres weyes en la Condesa y su casa tiene un chingo de plantas. La vida es buena..' },
+            { src: 'fotos/tecnocrat.jpeg', date: '18 de marzo, 2026', caption: 'Mi primer día como tecnócrata.' },
+            { src: 'fotos/cobossex.jpeg', date: '17 de marzo, 2026', caption: 'Con el Cobos, es que hoy entramos a Banco de México a hacer el SS y farmear CV.' }
+        ];
+
+        let current = 0;
+
+        function openModal(index) {
+            current = index;
+            render();
+            document.getElementById('igModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function render() {
+            const f = fotos[current];
+            document.getElementById('modalImg').src = f.src;
+            document.getElementById('modalDate').textContent = f.date;
+            document.getElementById('modalCaption').textContent = f.caption;
+        }
+
+        function navigate(dir) {
+            current = (current + dir + fotos.length) % fotos.length;
+            render();
+        }
+
+        function closeModal() {
+            document.getElementById('igModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('igModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (!document.getElementById('igModal').classList.contains('open')) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft') navigate(-1);
+            if (e.key === 'ArrowRight') navigate(1);
+        });
+
+        /* --- SCRIPT RANDOM WALK VIOLETA --- */
+        (function(){
+            const canvas = document.getElementById('canvas-archive');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            
+            class ArchiveWalk {
+                constructor() {
+                    this.x = 0; this.y = 0;
+                    this.trail = [];
+                    this.maxTrail = 4000;
+                    this.stepSize = 5;
+                    this.color = [138, 43, 226]; // Violeta #8a2be2
+                }
+                init(w, h) {
+                    this.x = w * 0.8; this.y = h * 0.5;
+                    this.trail = [{x: this.x, y: this.y, jump: false}];
+                    for(let i=0; i<1500; i++) this.updateInternal(w, h);
+                }
+                updateInternal(w, h) {
+                    const angle = Math.random() * Math.PI * 2;
+                    let nextX = this.x + Math.cos(angle) * this.stepSize;
+                    let nextY = this.y + Math.sin(angle) * this.stepSize;
+                    let jump = false;
+                    if (nextX < 0) { nextX = w; jump = true; }
+                    else if (nextX > w) { nextX = 0; jump = true; }
+                    if (nextY < 0) { nextY = h; jump = true; }
+                    else if (nextY > h) { nextY = 0; jump = true; }
+                    this.x = nextX; this.y = nextY;
+                    this.trail.push({x: this.x, y: this.y, jump: jump});
+                    if(this.trail.length > this.maxTrail) this.trail.shift();
+                }
+                update(w, h) { for(let i=0; i<15; i++) this.updateInternal(w, h); }
+                draw(ctx, w, h) {
+                    ctx.fillStyle = '#f4f7fa';
+                    ctx.fillRect(0, 0, w, h);
+                    if(this.trail.length < 2) return;
+                    ctx.beginPath();
+                    ctx.lineWidth = 1.3;
+                    ctx.strokeStyle = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, 0.22)`;
+                    ctx.moveTo(this.trail[0].x, this.trail[0].y);
+                    for(let i=1; i<this.trail.length; i++) {
+                        const p = this.trail[i];
+                        if (p.jump) ctx.moveTo(p.x, p.y);
+                        else ctx.lineTo(p.x, p.y);
+                    }
+                    ctx.stroke();
+                    ctx.fillStyle = `rgb(${this.color[0]}, ${this.color[1]}, ${this.color[2]})`;
+                    ctx.beginPath(); ctx.arc(this.x, this.y, 2.5, 0, Math.PI*2); ctx.fill();
+                }
+            }
+
+            const walker = new ArchiveWalk();
+            function handleResize() {
+                width = window.innerWidth; height = window.innerHeight;
+                canvas.width = width; canvas.height = height;
+                walker.init(width, height);
+            }
+            function loop() {
+                walker.update(width, height);
+                walker.draw(ctx, width, height);
+                requestAnimationFrame(loop);
+            }
+            window.addEventListener('resize', handleResize);
+            handleResize();
+            loop();
+        })();
+    </script>
+</body>
+</html>
