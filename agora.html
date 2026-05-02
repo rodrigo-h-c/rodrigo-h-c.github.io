@@ -87,7 +87,7 @@
             display: block;
         }
 
-        /* --- SPOTIFY MODERNO --- */
+        /* --- SPOTIFY CARD --- */
         .spotify-card {
             background: #1DB954;
             color: white;
@@ -101,6 +101,35 @@
         }
         .spotify-card:hover { transform: translateY(-3px); }
         .spotify-card span { font-weight: 800; font-size: 0.9rem; }
+
+        /* --- X (TWITTER) CARD --- */
+        .x-card {
+            background: #000000;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.3s, background 0.3s;
+            margin-bottom: 1.5rem;
+        }
+        .x-card:hover {
+            transform: translateY(-3px);
+            background: #111111;
+        }
+        .x-card .x-handle {
+            font-size: 1rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.01em;
+        }
+        .x-card .x-cta {
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: white;
+        }
 
         @media (max-width: 1200px) { .agora-layout { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 768px) {
@@ -130,6 +159,7 @@
         <h1>Ágora Social</h1>
 
         <div class="agora-layout">
+
             <!-- COLUMNA 1: SUBSTACK -->
             <div class="section-box">
                 <span class="label">Escritos (Substack)</span>
@@ -144,17 +174,22 @@
                 <script src="https://substackapi.com/embeds/feed.js" async></script>
             </div>
 
-            <!-- COLUMNA 2: X (TWITTER) -->
+            <!-- COLUMNA 2: X (TWITTER) — CORREGIDO -->
+            <!-- El widget dinámico de Twitter no funciona en GitHub Pages porque
+                 Twitter bloquea iframes desde dominios no verificados en su
+                 Developer Portal. Se reemplaza por enlace directo al perfil. -->
             <div class="section-box">
                 <span class="label">Pulso (X / Twitter)</span>
-                <!-- Nota: Este feed solo cargará correctamente cuando la página esté en un servidor web -->
-                <a class="twitter-timeline" 
-                   data-height="600" 
-                   data-chrome="transparent nofooter noheader" 
-                   href="https://twitter.com/eigenroi?ref_src=twsrc%5Etfw">
-                   Cargando tweets...
-                </a> 
-                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <a href="https://twitter.com/eigenroi" target="_blank" rel="noopener noreferrer" class="x-card">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.743l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    <span class="x-handle">@eigenroi</span>
+                    <span class="x-cta">VER TODOS MIS TWEETS ↗</span>
+                </a>
+                <p style="font-size: 0.8rem; color: #666; line-height: 1.4;">
+                    Accede directamente a mi perfil para ver los últimos tweets y threads.
+                </p>
             </div>
 
             <!-- COLUMNA 3: SPOTIFY -->
@@ -168,11 +203,12 @@
                     Accede directamente a mi biblioteca musical y colecciones curadas.
                 </p>
             </div>
+
         </div>
     </div>
 
     <script>
-        /* Lógica del Random Walk (Amarillo #fffb76) corregida */
+        /* Lógica del Random Walk (Amarillo #fffb76) */
         (function(){
             const canvas = document.getElementById('canvas-agora');
             const ctx = canvas.getContext('2d');
