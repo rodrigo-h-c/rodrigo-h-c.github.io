@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archivo - Rodrigo Hernández-Cervantes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Archivo - Rodrigo Hernández-Cervantes</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;display=swap" rel="stylesheet"/>
+<style>
         :root {
             --bg: #f4f7fa;
             --text: #000000;
@@ -24,14 +25,12 @@
             min-height: 100vh;
         }
 
-        /* --- FONDO DINÁMICO --- */
         #canvas-archive {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; pointer-events: none;
         }
 
-        /* --- SIDEBAR --- */
         .sidebar {
             position: fixed;
             left: 0; top: 0; bottom: 0;
@@ -53,7 +52,6 @@
         .nav-links a { text-decoration: none; color: var(--text); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
         .nav-links a:hover { color: var(--accent); }
 
-        /* --- LAYOUT PRINCIPAL --- */
         .container {
             position: relative;
             z-index: 10;
@@ -69,7 +67,6 @@
             margin-bottom: 3rem;
         }
 
-        /* --- MOSAICO DE FOTOS --- */
         .ig-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -81,9 +78,8 @@
             aspect-ratio: 1 / 1;
             overflow: hidden;
             cursor: pointer;
-            background: #111;
+            background: #e0e4e8;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .ig-thumb img {
@@ -91,8 +87,8 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            filter: grayscale(15%) contrast(1.05);
-            transition: filter 0.4s ease, transform 0.4s ease;
+            filter: grayscale(10%) contrast(1.05);
+            transition: filter 0.4s, transform 0.4s;
         }
 
         .ig-thumb:hover img {
@@ -107,30 +103,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.3s ease;
+            transition: background 0.3s;
         }
 
-        .ig-thumb:hover .ig-thumb-overlay {
-            background: rgba(0,0,0,0.5);
-        }
+        .ig-thumb:hover .ig-thumb-overlay { background: rgba(0,0,0,0.4); }
 
         .ig-thumb-overlay span {
             color: #fff;
-            font-size: 0.85rem;
-            letter-spacing: 0.15em;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
             font-weight: 700;
-            transform: translateY(10px);
         }
 
-        .ig-thumb:hover .ig-thumb-overlay span {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .ig-thumb:hover .ig-thumb-overlay span { opacity: 1; }
 
-        /* --- MODAL OSCURO --- */
         .ig-modal {
             display: none;
             position: fixed;
@@ -155,13 +143,12 @@
             overflow: hidden;
             position: relative;
             border-radius: 8px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         .ig-modal-img {
             flex: 1.5;
             min-width: 0;
-            background: #0a0a0a;
+            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -172,7 +159,6 @@
             height: 100%;
             object-fit: contain;
             display: block;
-            max-height: 85vh;
         }
 
         .ig-modal-info {
@@ -185,24 +171,22 @@
             background: #161616;
         }
 
-        .ig-modal-body {
-            padding: 24px;
-            flex: 1;
-        }
+        .ig-modal-body { padding: 24px; flex: 1; }
 
         .ig-modal-date {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 800;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--accent);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .ig-modal-caption {
             font-size: 0.95rem;
             color: #d1d1d1;
             line-height: 1.6;
+            font-weight: 500;
         }
 
         .ig-modal-close {
@@ -214,32 +198,22 @@
             color: #fff;
             font-size: 40px;
             cursor: pointer;
-            line-height: 1;
             opacity: 0.6;
-            transition: opacity 0.2s;
-            z-index: 1000;
         }
-        .ig-modal-close:hover { opacity: 1; }
 
         .ig-modal-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.5);
             border: none;
             color: #fff;
             font-size: 24px;
             width: 44px;
             height: 70px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.6;
-            transition: opacity 0.2s, background 0.2s;
             z-index: 1001;
         }
-        .ig-modal-nav:hover { opacity: 1; background: rgba(0,0,0,0.9); }
         .ig-modal-prev { left: 0; border-radius: 0 6px 6px 0; }
         .ig-modal-next { right: 300px; border-radius: 6px 0 0 6px; }
 
@@ -252,141 +226,114 @@
     </style>
 </head>
 <body>
-
-    <canvas id="canvas-archive"></canvas>
-
-    <nav class="sidebar">
-        <img src="phi.png" alt="Phi" class="phi-logo">
-        <ul class="nav-links">
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="bio.html">Bio</a></li>
-            <li><a href="publicaciones.html">Publicaciones</a></li>
-            <li><a href="agora.html">Ágora Social</a></li>
-            <li><a href="proyectos.html">Proyectos</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
-            <li><a href="archivo.html" style="color: var(--accent);">Archivo</a></li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <h1>Archivo</h1>
-        
-        <main>
-            <div class="ig-grid">
-                <!-- 10 FOTOS -->
-                <div class="ig-thumb" onclick="openModal(0)">
-                    <img alt="" src="fotos/momingo.jpg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(1)">
-                    <img alt="" src="fotos/1000172135.jpg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(2)">
-                    <img alt="" src="fotos/20260414_160725.jpg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(3)">
-                    <img alt="" src="fotos/20260403_161656.jpg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(4)">
-                    <img alt="" src="fotos/WhatsApp Image 2026-03-29 at 12.50.35 PM.jpeg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(5)">
-                    <img alt="" src="fotos/photo_5064704407466871714_y.jpg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(6)">
-                    <img alt="" src="fotos/WhatsApp Image 2026-03-29 at 12.51.14 PM.jpeg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(7)">
-                    <img alt="" src="fotos/dream.jpeg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(8)">
-                    <img alt="" src="fotos/tecnocrat.jpeg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-                <div class="ig-thumb" onclick="openModal(9)">
-                    <img alt="" src="fotos/cobossex.jpeg"/>
-                    <div class="ig-thumb-overlay"><span>Chismosear</span></div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Modal -->
-    <div class="ig-modal" id="igModal">
-        <button class="ig-modal-close" onclick="closeModal()">×</button>
-        <div class="ig-modal-inner">
-            <button class="ig-modal-nav ig-modal-prev" onclick="navigate(-1)">←</button>
-            <div class="ig-modal-img">
-                <img alt="" id="modalImg" src=""/>
-            </div>
-            <button class="ig-modal-nav ig-modal-next" onclick="navigate(1)">→</button>
-            <div class="ig-modal-info">
-                <div class="ig-modal-body">
-                    <div class="ig-modal-date" id="modalDate"></div>
-                    <div class="ig-modal-caption" id="modalCaption"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Array reducido a las 10 fotos solicitadas
+<canvas id="canvas-archive"></canvas>
+<nav class="sidebar">
+<img alt="Phi" class="phi-logo" src="phi.png"/>
+<ul class="nav-links">
+<li><a href="index.html">Inicio</a></li>
+<li><a href="bio.html">Bio</a></li>
+<li><a href="publicaciones.html">Publicaciones</a></li>
+<li><a href="agora.html">Ágora Social</a></li>
+<li><a href="proyectos.html">Proyectos</a></li>
+<li><a href="contacto.html">Contacto</a></li>
+<li><a href="archivo.html" style="color: var(--accent);">Archivo</a></li>
+</ul>
+</nav>
+<div class="container">
+<h1>Archivo</h1>
+<main>
+<div class="ig-grid">
+<div class="ig-thumb" onclick="openModal(0)">
+<img alt="" src="fotospagpro/20260407_172236.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(1)">
+<img alt="" src="fotospagpro/20260324_075041.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(2)">
+<img alt="" src="fotospagpro/photo_5165901615146404809_y.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(3)">
+<img alt="" src="fotospagpro/grafica_banxico_final.png"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(4)">
+<img alt="" src="fotospagpro/gear.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(5)">
+<img alt="" src="fotospagpro/gayglenweaias5m.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(6)">
+<img alt="" src="fotospagpro/20250408_094308.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(7)">
+<img alt="" src="fotospagpro/sne-10.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(8)">
+<img alt="" src="fotospagpro/gzza4ltasaaiaqw.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div>
+<div class="ig-thumb" onclick="openModal(9)">
+<img alt="" src="fotospagpro/img_9026.jpg"/>
+<div class="ig-thumb-overlay"><span>Chismosear</span></div>
+</div></div>
+</main>
+</div>
+<div class="ig-modal" id="igModal">
+<button class="ig-modal-close" onclick="closeModal()">×</button>
+<div class="ig-modal-inner">
+<button class="ig-modal-nav ig-modal-prev" onclick="navigate(-1)">←</button>
+<div class="ig-modal-img">
+<img alt="" id="modalImg" src=""/>
+</div>
+<button class="ig-modal-nav ig-modal-next" onclick="navigate(1)">→</button>
+<div class="ig-modal-info">
+<div class="ig-modal-body">
+<div class="ig-modal-date" id="modalDate"></div>
+<div class="ig-modal-caption" id="modalCaption"></div>
+</div>
+</div>
+</div>
+</div>
+<script>
         const fotos = [
-            { src: 'fotos/momingo.jpg', date: '27 de abril, 2026', caption: 'Rodrigo flirting' },
-            { src: 'fotos/1000172135.jpg', date: '22 de abril, 2026', caption: 'Pinche universidad chingona (podemos pistear en la calle)' },
-            { src: 'fotos/20260414_160725.jpg', date: '14 de abril, 2026', caption: 'Yemaina moment' },
-            { src: 'fotos/20260403_161656.jpg', date: '4 de abril, 2026', caption: 'Ayer me comí eso yo solo xD' },
-            { src: 'fotos/WhatsApp Image 2026-03-29 at 12.50.35 PM.jpeg', date: '29 de marzo, 2026', caption: 'Con la Xime en sala Neza luego de escuchar El mandarín milagroso, un día muy bonito verdad de Dios.' },
-            { src: 'fotos/photo_5064704407466871714_y.jpg', date: '29 de marzo, 2026', caption: 'Sometimes I would have liked to be a musician' },
-            { src: 'fotos/WhatsApp Image 2026-03-29 at 12.51.14 PM.jpeg', date: '21 de marzo, 2026', caption: '3 años de amistad y estoy seguro que esta madre es una de nuestras 3 únicas selfies. Love you, bitch ass' },
-            { src: 'fotos/dream.jpeg', date: '20 de marzo, 2026', caption: 'Imagine this: Entras a las 9 a este edificio, eres Lic., andas buscando becas para irte a hacer el MSc a Europa, ganas 32 mil varos al mes y tienes una novia que estudia en una STEM. Por las tardes eres adjunto y repruebas pendejos; todos los viernes sales a vivir la vida nocturna, rentas con tres weyes en la Condesa y su casa tiene un chingo de plantas. La vida es buena..' },
-            { src: 'fotos/tecnocrat.jpeg', date: '18 de marzo, 2026', caption: 'Mi primer día como tecnócrata.' },
-            { src: 'fotos/cobossex.jpeg', date: '17 de marzo, 2026', caption: 'Con el Cobos, es que hoy entramos a Banco de México a hacer el SS y farmear CV.' }
+            { src: 'fotospagpro/20260407_172236.jpg', date: '7 de abril, 2026', caption: 'Mi manada' },
+            { src: 'fotospagpro/20260324_075041.jpg', date: '18 de marzo, 2026', caption: 'Primer día del Intership de Banxico' },
+            { src: 'fotospagpro/photo_5165901615146404809_y.jpg', date: '27 de febrero, 2026', caption: 'Última foto como Secretario de Academia en la IV Asamblea Nacional ANEE' },
+            { src: 'fotospagpro/grafica_banxico_final.png', date: '20 de diciembre, 2025', caption: 'Gráficas chulas hechas en python' },
+            { src: 'fotospagpro/gear.jpg', date: '2 de diciembre, 2025', caption: 'Herramientas de Análisis' },
+            { src: 'fotospagpro/gayglenweaias5m.jpg', date: '25 de octubre, 2025', caption: 'Última Conferencia Coordinada como representante de la ANEE en la Facultad' },
+            { src: 'fotospagpro/20250408_094308.jpg', date: '4 de agosto, 2025', caption: 'Ciclo de Conferencias del INEGI' },
+            { src: 'fotospagpro/sne-10.jpg', date: '31 de mayo, 2025', caption: 'XII Simposio Nacional' },
+            { src: 'fotospagpro/gzza4ltasaaiaqw.jpg', date: '8 de octubre, 2024', caption: 'Presentación de "Así no es" en El Colegio de México' },
+            { src: 'fotospagpro/img_9026.jpg', date: '6 de mayo, 2024', caption: 'Primer Evento Organizado como repre de la ANEE' }
         ];
 
         let current = 0;
-
         function openModal(index) {
-            current = index;
-            render();
+            current = index; render();
             document.getElementById('igModal').classList.add('open');
             document.body.style.overflow = 'hidden';
         }
-
         function render() {
             const f = fotos[current];
             document.getElementById('modalImg').src = f.src;
             document.getElementById('modalDate').textContent = f.date;
             document.getElementById('modalCaption').textContent = f.caption;
         }
-
         function navigate(dir) {
-            current = (current + dir + fotos.length) % fotos.length;
-            render();
+            current = (current + dir + fotos.length) % fotos.length; render();
         }
-
         function closeModal() {
             document.getElementById('igModal').classList.remove('open');
             document.body.style.overflow = '';
         }
-
-        document.getElementById('igModal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (!document.getElementById('igModal').classList.contains('open')) return;
-            if (e.key === 'Escape') closeModal();
-            if (e.key === 'ArrowLeft') navigate(-1);
-            if (e.key === 'ArrowRight') navigate(1);
-        });
 
         /* --- SCRIPT RANDOM WALK VIOLETA --- */
         (function(){
@@ -400,7 +347,7 @@
                     this.trail = [];
                     this.maxTrail = 4000;
                     this.stepSize = 5;
-                    this.color = [138, 43, 226]; // Violeta #8a2be2
+                    this.color = [138, 43, 226]; 
                 }
                 init(w, h) {
                     this.x = w * 0.8; this.y = h * 0.5;
