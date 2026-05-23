@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ágora Social - Rodrigo Hernández-Cervantes</title>
+    <title>Social Agora- Rodrigo Hernández-Cervantes</title>
 <link rel="icon" type="image/png" href="phi.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -146,24 +146,24 @@
     <nav class="sidebar">
         <img src="phi.png" alt="Phi" class="phi-logo">
         <ul class="nav-links">
-            <li><a href="index.html">Inicio</a></li>
+            <li><a href="index.html">Home</a></li>
             <li><a href="bio.html">Bio</a></li>
-            <li><a href="publicaciones.html">Publicaciones</a></li>
-            <li><a href="agora.html" style="color: var(--accent);">Ágora Social</a></li>
-            <li><a href="proyectos.html">Proyectos</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
-            <li><a href="archivo.html">Archivo</a></li>
+            <li><a href="publicaciones.html">Publications</a></li>
+            <li><a href="agora.html" style="color: var(--accent);">Social Agora</a></li>
+            <li><a href="proyectos.html">Projects</a></li>
+            <li><a href="contacto.html">Contact</a></li>
+            <li><a href="archivo.html">Archive</a></li>
         </ul>
     </nav>
 
     <div class="container">
-        <h1>Ágora Social</h1>
+        <h1>Social Agora</h1>
 
         <div class="agora-layout">
 
             <!-- COLUMNA 1: SUBSTACK -->
             <div class="section-box">
-                <span class="label">Escritos (Substack)</span>
+                <span class="label">Writings on Substack</span>
                 <div id="substack-feed-embed"></div>
                 <script>
                   window.SubstackFeedWidget = {
@@ -175,38 +175,32 @@
                 <script src="https://substackapi.com/embeds/feed.js" async></script>
             </div>
 
-            <!-- COLUMNA 2: X (TWITTER) — CORREGIDO -->
-            <!-- El widget dinámico de Twitter no funciona en GitHub Pages porque
-                 Twitter bloquea iframes desde dominios no verificados en su
-                 Developer Portal. Se reemplaza por enlace directo al perfil. -->
-            <div class="section-box">
-                <span class="label">Pulso (X / Twitter)</span>
-                <a href="https://twitter.com/eigenroi" target="_blank" rel="noopener noreferrer" class="x-card">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.743l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                    <span class="x-handle">@eigenroi</span>
-                    <span class="x-cta">VER TODOS MIS TWEETS ↗</span>
-                </a>
-                <p style="font-size: 0.8rem; color: #666; line-height: 1.4;">
-                    Accede directamente a mi perfil para ver los últimos tweets y threads.
-                </p>
-            </div>
+           <!-- COLUMNA 3: SPOTIFY -->
+<div class="section-box">
+    <span class="label">Music Curator</span>
 
-            <!-- COLUMNA 3: SPOTIFY -->
-            <div class="section-box">
-                <span class="label">Curación Musical</span>
-                <a href="https://open.spotify.com/user/22yqun6lby7jtrbvfaiojtdva" target="_blank" class="spotify-card">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" width="30" alt="Spotify">
-                    <span>EXPLORAR TODAS MIS PLAYLISTS ↗</span>
-                </a>
-                <p style="font-size: 0.8rem; color: #666; margin-top: 1.5rem; line-height: 1.4;">
-                    Accede directamente a mi biblioteca musical y colecciones curadas.
-                </p>
-            </div>
+    <!-- SPOTIFY PLAYLIST EMBED -->
+    <iframe 
+        data-testid="embed-iframe" 
+        style="border-radius:12px; margin: 15px 0;" 
+        src="https://open.spotify.com/embed/playlist/2BPEwPWMivmkGB4yjqZmY6?utm_source=generator" 
+        width="100%" 
+        height="352" 
+        frameBorder="0" 
+        allowfullscreen="" 
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+        loading="lazy">
+    </iframe>
 
-        </div>
-    </div>
+    <a href="https://open.spotify.com/user/22yqun6lby7jtrbvfaiojtdva" target="_blank" class="spotify-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" width="30" alt="Spotify">
+        <span>MY PLAYLISTS ↗</span>
+    </a>
+    
+    <p style="font-size: 0.8rem; color: #666; margin-top: 1.5rem; line-height: 1.4;">
+        Access my music library and curated collections directly.
+    </p>
+</div>
 
     <script>
         /* Lógica del Random Walk (Amarillo #fffb76) */
