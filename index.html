@@ -74,10 +74,6 @@
             position: relative;
         }
 
-        /* Contenedor que agrupa la nota y la barra de navegación.
-           Ambas se apilan en la misma celda de grid para que el ancho
-           de esta caja NUNCA cambie con el hover: así el borde que
-           detecta mouseenter/mouseleave se queda quieto y no se bugea. */
         .nav-group {
             display: inline-grid;
             align-items: baseline;
@@ -110,9 +106,10 @@
             border-bottom: 1px solid #000;
             padding-bottom: 2px;
             transition: opacity 0.25s ease;
+            z-index: 20; /* Asegura que esté por encima de cualquier elemento flotante */
         }
 
-        /* Clases de control mediante JavaScript para una transición perfecta */
+        /* Clases de control mediante JavaScript */
         .header-container.active .nav-hint {
             opacity: 0;
         }
@@ -127,6 +124,8 @@
             color: #000000;
             font-size: 11pt;
             transition: color 0.2s;
+            position: relative;
+            z-index: 21; /* Garantiza clickabilidad absoluta en los enlaces */
         }
 
         .nav-bar a:hover {
@@ -198,7 +197,7 @@
             <div class="header-container" id="headerNav">
                 <h1>Rodrigo Hernández-Cervantes</h1>
                 <div class="nav-group">
-                    <span class="nav-hint">(hover to navigate)</span>
+                    <span class="nav-hint">(hover or click to navigate)</span>
                     <nav class="nav-bar">
                         <a href="research.html">Research</a>
                         <a href="projects.html">Projects</a>
@@ -234,21 +233,38 @@
     </div>
 
     <script>
-        // --- LÓGICA DEL MENÚ INTERACTIVO (Evita cierres bruscos y controla la nota) ---
+        // --- LÓGICA DEL MENÚ INTERACTIVO MEJORADA (Hover + Click para móviles y estabilidad) ---
         (function() {
             const headerNav = document.getElementById('headerNav');
             let hideTimeout = null;
 
+            // Mostrar al pasar el mouse
             headerNav.addEventListener('mouseenter', () => {
                 clearTimeout(hideTimeout);
                 headerNav.classList.add('active');
             });
 
+            // Ocultar al quitar el mouse con retraso
             headerNav.addEventListener('mouseleave', () => {
-                // Da un margen de tiempo generoso (400ms) antes de cerrar el menú por si el mouse pasa cerca
                 hideTimeout = setTimeout(() => {
                     headerNav.classList.remove('active');
                 }, 400);
+            });
+
+            // Permitir abrir/cerrar mediante clic directo (indispensable para celulares)
+            headerNav.addEventListener('click', (e) => {
+                // Si se hace clic directamente en un enlace dentro del menú, permitimos la navegación normal
+                if (e.target.tagName === 'A') return;
+
+                e.stopPropagation();
+                headerNav.classList.toggle('active');
+            });
+
+            // Cerrar el menú si se hace clic en cualquier otra parte de la página
+            document.addEventListener('click', (e) => {
+                if (!headerNav.contains(e.target)) {
+                    headerNav.classList.remove('active');
+                }
             });
         })();
 
