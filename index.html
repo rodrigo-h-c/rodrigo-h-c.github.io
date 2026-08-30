@@ -43,11 +43,25 @@
         }
 
         /* --- ENCABEZADO Y MENÚ HORIZONTAL --- */
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
         .header-container {
             display: inline-flex;
             align-items: baseline;
-            margin-bottom: 25px;
             position: relative;
+        }
+
+        /* Escudo alineado a la derecha, a la altura del nombre */
+        .crest-logo {
+            height: 34px;
+            width: auto;
+            flex-shrink: 0;
+            margin-left: 20px;
         }
 
         /* El nombre actúa como el activador principal */
@@ -60,12 +74,21 @@
             position: relative;
         }
 
-        /* Contenedor que agrupa la nota y la barra de navegación */
+        /* Contenedor que agrupa la nota y la barra de navegación.
+           Ambas se apilan en la misma celda de grid para que el ancho
+           de esta caja NUNCA cambie con el hover: así el borde que
+           detecta mouseenter/mouseleave se queda quieto y no se bugea. */
         .nav-group {
-            display: inline-flex;
+            display: inline-grid;
             align-items: baseline;
             position: relative;
             margin-left: 12px;
+        }
+
+        .nav-hint,
+        .nav-bar {
+            grid-area: 1 / 1;
+            white-space: nowrap;
         }
 
         /* Nota guía al lado del nombre */
@@ -73,38 +96,30 @@
             font-size: 10pt;
             color: #666;
             font-style: italic;
-            white-space: nowrap;
             opacity: 1;
-            transition: opacity 0.2s ease, visibility 0.2s ease, max-width 0.3s ease;
+            transition: opacity 0.25s ease;
         }
 
-        /* La barra de navegación (inicialmente oculta/colapsada) */
+        /* La barra de navegación (inicialmente oculta) */
         .nav-bar {
             display: flex;
             align-items: center;
             gap: 20px;
-            max-width: 0;
             opacity: 0;
-            overflow: hidden;
-            white-space: nowrap;
+            pointer-events: none;
             border-bottom: 1px solid #000;
             padding-bottom: 2px;
-            transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            transition: opacity 0.25s ease;
         }
 
         /* Clases de control mediante JavaScript para una transición perfecta */
         .header-container.active .nav-hint {
             opacity: 0;
-            visibility: hidden;
-            max-width: 0;
-            margin: 0;
-            overflow: hidden;
         }
 
         .header-container.active .nav-bar {
-            max-width: 500px;
             opacity: 1;
-            margin-left: 0; /* Se mantiene alineado perfectamente */
+            pointer-events: auto;
         }
 
         .nav-bar a {
@@ -163,9 +178,11 @@
             .content-wrapper { margin: 5vh auto; padding: 0 25px; }
             .main-columns { flex-direction: column; }
             .photo-col { width: 180px; margin-bottom: 15px; }
+            .header-row { align-items: center; }
             .header-container { flex-direction: column; align-items: flex-start; }
-            .nav-group { margin-left: 0; margin-top: 5px; flex-direction: column; align-items: flex-start; }
-            .header-container.active .nav-bar { max-width: 100%; margin-top: 5px; }
+            .nav-group { margin-left: 0; margin-top: 5px; }
+            .nav-bar { flex-wrap: wrap; row-gap: 6px; }
+            .crest-logo { height: 26px; margin-left: 10px; }
         }
     </style>
 </head>
@@ -177,17 +194,20 @@
     <div class="content-wrapper">
         
         <!-- Encabezado con control interactivo robusto -->
-        <div class="header-container" id="headerNav">
-            <h1>Rodrigo Hernández-Cervantes</h1>
-            <div class="nav-group">
-                <span class="nav-hint">(hover to navigate)</span>
-                <nav class="nav-bar">
-                    <a href="research.html">Research</a>
-                    <a href="projects.html">Projects</a>
-                    <a href="agora.html">Social Agora</a>
-                    <a href="cv.html">CV</a>
-                </nav>
+        <div class="header-row">
+            <div class="header-container" id="headerNav">
+                <h1>Rodrigo Hernández-Cervantes</h1>
+                <div class="nav-group">
+                    <span class="nav-hint">(hover to navigate)</span>
+                    <nav class="nav-bar">
+                        <a href="research.html">Research</a>
+                        <a href="projects.html">Projects</a>
+                        <a href="agora.html">Social Agora</a>
+                        <a href="cv.html">CV</a>
+                    </nav>
+                </div>
             </div>
+            <img src="phi.png" alt="Escudo" class="crest-logo">
         </div>
 
         <!-- Columnas: Foto y Texto Actualizado -->
