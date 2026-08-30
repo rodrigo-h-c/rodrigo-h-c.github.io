@@ -9,7 +9,7 @@
         :root {
             --bg: #f4f7fa;
             --text: #000000;
-            --accent: #055edf; /* Azul académico para Research */
+            --accent: #055edf; /* Azul académico original para Research */
             --sidebar-w: 220px;
         }
 
@@ -36,7 +36,7 @@
             z-index: -1; pointer-events: none;
         }
 
-        /* --- SIDEBAR FIJA Y LIMPIA --- */
+        /* --- SIDEBAR FIJA Y HOMOGÉNEA --- */
         .sidebar {
             position: fixed;
             left: 0; top: 0; bottom: 0;
@@ -61,7 +61,7 @@
             list-style: none; 
             display: flex; 
             flex-direction: column; 
-            gap: 1.2rem; 
+            gap: 1.2rem; /* Espaciado idéntico en todas las páginas */
         }
 
         .nav-links a { 
@@ -75,7 +75,7 @@
             color: var(--accent); 
         }
 
-        /* --- LAYOUT PRINCIPAL --- */
+        /* --- LAYOUT PRINCIPAL ALINEADO A LA IZQUIERDA --- */
         .container {
             position: relative;
             z-index: 10;
@@ -175,7 +175,7 @@
     <!-- Canvas de Movimiento Browniano -->
     <canvas id="canvas-research"></canvas>
 
-    <!-- Menú Lateral Fijo -->
+    <!-- Menú Lateral Fijo y Homogéneo -->
     <nav class="sidebar">
         <img src="phi.png" alt="Phi" class="phi-logo">
         <ul class="nav-links">
@@ -223,15 +223,6 @@
             </div>
         </section>
 
-        <!-- Key Research Projects -->
-        <section>
-            <h2>Key Research Projects</h2>
-            <ul>
-                <li><strong>Forecast Table Automation (VBA):</strong> Module that processes Bloomberg data and automatically generates regional forecast tables for the US, Eurozone, EU, and Japan, eliminating manual weekly table-building.</li>
-                <li><strong>Monetary Policy Decisions Agenda (R):</strong> Script that reads central bank decision databases and generates reports with conditional formatting and automatic status flagging.</li>
-            </ul>
-        </section>
-
         <!-- Publications & Upcoming Work (Ordenado de más reciente a más viejo) -->
         <section>
             <h2>Publications & Upcoming Work</h2>
@@ -258,7 +249,7 @@
                     this.trail = [];
                     this.maxTrail = 4000;
                     this.stepSize = 5;
-                    this.color = [5, 94, 223]; // Azul académico #055edf
+                    this.color = [5, 94, 223]; // Azul académico original #055edf
                 }
                 init(w, h) {
                     this.x = w * 0.2; this.y = h * 0.8;
