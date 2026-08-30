@@ -1,279 +1,362 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Rodrigo Hernández-Cervantes - Inicio</title>
-<link rel="icon" type="image/png" href="phi.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rodrigo Hernández-Cervantes</title>
+    <link rel="icon" type="image/png" href="phi.png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* --- ESTILOS GENERALES (Minimalismo Académico) --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: "Times New Roman", Times, serif;
             user-select: none;
         }
 
         body {
-            background: #f4f7fa;
-            overflow: hidden;
-            font-family: 'Inter', sans-serif;
+            background-color: #f4f7fa;
+            color: #000000;
+            overflow-x: hidden;
+            font-size: 11pt; /* Letra general tamaño 11 */
         }
 
-        canvas {
+        /* --- CANVAS (FONDO BROWNIANO) --- */
+        #canvas-bio {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: block;
-            z-index: 0;
-        }
-
-        .vignette {
-            position: fixed;
-            inset: 0;
-            z-index: 2;
-            background: radial-gradient(circle at center, transparent 40%, rgba(230, 236, 240, 0.7) 100%);
+            z-index: -1; 
             pointer-events: none;
         }
 
-        #home {
-            position: fixed;
-            inset: 0;
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .content-wrapper {
+            max-width: 900px;
+            margin: 8vh auto;
+            padding: 0 40px;
+            position: relative;
             z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none; 
         }
 
-        .flower {
+        /* --- ENCABEZADO Y MENÚ HORIZONTAL --- */
+        .header-container {
+            display: inline-flex;
+            align-items: baseline;
+            margin-bottom: 25px;
             position: relative;
-            width: 500px;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        /* --- NOMBRE EN UNA SOLA LÍNEA Y NEGRO --- */
-        .name-center {
-            position: relative;
-            z-index: 20;
-            text-align: center;
+        /* El nombre actúa como el activador principal */
+        .header-container h1 {
+            font-size: 13pt; /* Título tamaño 13 */
+            font-weight: bold;
+            white-space: nowrap;
+            color: #000000;
             cursor: pointer;
-            pointer-events: auto; 
-            padding: 20px;
-            white-space: nowrap; /* Fuerza una sola línea */
-        }
-        
-        .name-center h1 {
-            font-weight: 800; 
-            font-size: clamp(1.4rem, 3.5vw, 2.8rem);
-            letter-spacing: -0.02em;
-            color: #000000; /* Letra Negra */
-            line-height: 1;
-            transition: transform 0.4s ease;
-        }
-        
-        .name-center:hover h1 {
-            transform: scale(1.02);
+            position: relative;
         }
 
-        /* --- PÉTALOS --- */
-        .petal {
-            position: absolute;
-            width: 150px;
-            height: 40px;
+        /* Contenedor que agrupa la nota y la barra de navegación */
+        .nav-group {
+            display: inline-flex;
+            align-items: baseline;
+            position: relative;
+            margin-left: 12px;
+        }
+
+        /* Nota guía al lado del nombre */
+        .nav-hint {
+            font-size: 10pt;
+            color: #666;
+            font-style: italic;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.2s ease, visibility 0.2s ease, max-width 0.3s ease;
+        }
+
+        /* La barra de navegación (inicialmente oculta/colapsada) */
+        .nav-bar {
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-decoration: none;
+            gap: 20px;
+            max-width: 0;
             opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.4s cubic-bezier(0.34,1.56,0.64,1), transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-            pointer-events: none;
-            z-index: 30;
+            overflow: hidden;
+            white-space: nowrap;
+            border-bottom: 1px solid #000;
+            padding-bottom: 2px;
+            transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
-        
-        .petal.open {
+
+        /* Clases de control mediante JavaScript para una transición perfecta */
+        .header-container.active .nav-hint {
+            opacity: 0;
+            visibility: hidden;
+            max-width: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .header-container.active .nav-bar {
+            max-width: 500px;
             opacity: 1;
-            transform: scale(1) translate(var(--tx), var(--ty));
-            pointer-events: auto;
+            margin-left: 0; /* Se mantiene alineado perfectamente */
+        }
+
+        .nav-bar a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 11pt;
+            transition: color 0.2s;
+        }
+
+        .nav-bar a:hover {
+            color: #055edf;
+        }
+
+        /* --- COLUMNAS (FOTO Y BIO) --- */
+        .main-columns {
+            display: flex;
+            align-items: flex-start;
+            gap: 40px;
+        }
+
+        .photo-col { 
+            flex: 0 0 220px; 
+            position: relative;
         }
         
-        .petal.closing {
-            transition: opacity 0.3s ease, transform 0.3s ease;
+        .photo-col img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4/5;
+            object-fit: cover;
+            display: block;
+            border: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* Radio optimizado para el nombre largo */
-        .petal[data-i="0"]{--tx:0px;   --ty:-130px; transition-delay:.00s;}
-        .petal[data-i="1"]{--tx:190px; --ty:-60px;  transition-delay:.04s;}
-        .petal[data-i="2"]{--tx:190px; --ty: 60px;  transition-delay:.08s;}
-        .petal[data-i="3"]{--tx:0px;   --ty: 130px; transition-delay:.12s;}
-        .petal[data-i="4"]{--tx:-190px;--ty: 60px;  transition-delay:.16s;}
-        .petal[data-i="5"]{--tx:-190px;--ty:-60px;  transition-delay:.20s;}
+        .text-col { 
+            flex: 1; 
+        }
 
-        .petal-label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: #000000; /* Letra Negra */
-            transition: color 0.3s, transform 0.3s;
-            text-shadow: 0px 0px 10px rgba(255,255,255,0.8);
+        .text-col p {
+            line-height: 1.55;
+            margin-bottom: 12pt;
+            text-align: justify;
+        }
+
+        .text-col a {
+            color: #000000;
+            text-decoration: underline;
         }
         
-        .petal:hover .petal-label {
-            color: #055edf; /* Cambio a azul de la paleta en hover */
-            transform: scale(1.1);
+        .text-col a:hover {
+            color: #055edf;
         }
 
-        @media(max-width:600px){
-            .flower { width: 100%; height: 400px; }
-            .name-center h1 { font-size: 1.2rem; }
-            .petal[data-i="0"]{--tx:0px;   --ty:-110px;}
-            .petal[data-i="1"]{--tx:110px; --ty:-50px;}
-            .petal[data-i="2"]{--tx:110px; --ty: 50px;}
-            .petal[data-i="3"]{--tx:0px;   --ty: 110px;}
-            .petal[data-i="4"]{--tx:-110px;--ty: 50px;}
-            .petal[data-i="5"]{--tx:-110px;--ty:-50px;}
+        /* --- RESPONSIVE (Celulares) --- */
+        @media (max-width: 768px) {
+            .content-wrapper { margin: 5vh auto; padding: 0 25px; }
+            .main-columns { flex-direction: column; }
+            .photo-col { width: 180px; margin-bottom: 15px; }
+            .header-container { flex-direction: column; align-items: flex-start; }
+            .nav-group { margin-left: 0; margin-top: 5px; flex-direction: column; align-items: flex-start; }
+            .header-container.active .nav-bar { max-width: 100%; margin-top: 5px; }
         }
     </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    <div class="vignette"></div>
 
-    <div id="home">
-       <div class="flower" id="flower">
-    <a class="petal" data-i="0" href="bio.html"><span class="petal-label">Bio</span></a>
-    <a class="petal" data-i="1" href="publicaciones.html"><span class="petal-label">Publications</span></a>
-    <a class="petal" data-i="2" href="agora.html"><span class="petal-label">Social Agora</span></a>
-    <a class="petal" data-i="3" href="proyectos.html"><span class="petal-label">Projects</span></a>
-    <a class="petal" data-i="4" href="contacto.html"><span class="petal-label">Contact</span></a>
-    <a class="petal" data-i="5" href="archivo.html"><span class="petal-label">Archive</span></a>
+    <!-- Canvas de Movimiento Browniano -->
+    <canvas id="canvas-bio"></canvas>
 
-            <div class="name-center" id="nameCenter">
-                <h1>Rodrigo Hernández-Cervantes</h1>
+    <div class="content-wrapper">
+        
+        <!-- Encabezado con control interactivo robusto -->
+        <div class="header-container" id="headerNav">
+            <h1>Rodrigo Hernández-Cervantes</h1>
+            <div class="nav-group">
+                <span class="nav-hint">(hover to navigate)</span>
+                <nav class="nav-bar">
+                    <a href="research.html">Research</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="social_agora.html">Social Agora</a>
+                    <a href="cv.html">CV</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Columnas: Foto y Texto Actualizado -->
+        <div class="main-columns">
+            <div class="photo-col">
+                <img src="fotospagpro/perfil.jpg" alt="Rodrigo Hernández-Cervantes" id="profilePhoto">
+            </div>
+            
+            <div class="text-col">
+                <p>
+                    Hello, I'm Rodrigo. I am an undergraduate student in Economics at the <a href="https://www.unam.mx/" target="_blank">National Autonomous University of Mexico (UNAM)</a>, where I serve as a Teaching Assistant for General Economic History.
+                </p>
+                <p>
+                    My academic research interests lie primarily in macroeconomics, labor and behavioral economics, alongside the integration of machine learning methodologies into agent-based models. I am actively pursuing international opportunities and seeking admission to an MSc in Economics program to further advance my research career.
+                </p>
+                <p>
+                    When I step away from economics, you will likely find me on the tennis court (Nole is my undisputed GOAT). I am also a massive cinephile and melomaniac, and I play in an admittedly terrible band called Fenomenólogos. Beyond that, my reading list is usually filled with politics, anthropology, and philosophy. I truly believe that by building and improving our institutions, we can create better opportunities for the people of Mexico.
+                </p>
+                <p>
+                    Feel free to reach me at: <a href="mailto:rohrc14@gmail.com">rohrc14@gmail.com</a>
+                </p>
             </div>
         </div>
     </div>
 
     <script>
-        // --- LÓGICA DEL MENÚ ---
-        const nameCenter = document.getElementById('nameCenter');
-        const petals = document.querySelectorAll('.petal');
-        let hoverTimeout; 
+        // --- LÓGICA DEL MENÚ INTERACTIVO (Evita cierres bruscos y controla la nota) ---
+        (function() {
+            const headerNav = document.getElementById('headerNav');
+            let hideTimeout = null;
 
-        function openPetals(){
-            clearTimeout(hoverTimeout); 
-            petals.forEach(p => { p.classList.remove('closing'); p.classList.add('open'); });
-        }
+            headerNav.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimeout);
+                headerNav.classList.add('active');
+            });
 
-        function closePetals(){
-            petals.forEach(p => { p.classList.add('closing'); p.classList.remove('open'); });
-        }
+            headerNav.addEventListener('mouseleave', () => {
+                // Da un margen de tiempo generoso (400ms) antes de cerrar el menú por si el mouse pasa cerca
+                hideTimeout = setTimeout(() => {
+                    headerNav.classList.remove('active');
+                }, 400);
+            });
+        })();
 
-        nameCenter.addEventListener('mouseenter', openPetals);
-        nameCenter.addEventListener('mouseleave', () => { hoverTimeout = setTimeout(closePetals, 300); });
-
-        petals.forEach(p => {
-            p.addEventListener('mouseenter', openPetals);
-            p.addEventListener('mouseleave', () => { hoverTimeout = setTimeout(closePetals, 300); });
-        });
-
-        // --- LÓGICA DE RANDOM WALK ---
+        // --- LÓGICA DEL FONDO DINÁMICO (3 Movimientos Brownianos) ---
         (function(){
-            const canvas = document.getElementById('canvas');
-            let ctx = canvas.getContext('2d');
+            const canvas = document.getElementById('canvas-bio');
+            const ctx = canvas.getContext('2d');
+            const photo = document.getElementById('profilePhoto');
             let width, height;
+            let simulation = null;
             
-            class RandomWalk {
-                constructor(w, h) {
+            class BioWalk {
+                constructor(w, h, startX, startY) {
                     this.walkers = [];
                     this.numWalkers = 3; 
-                    this.maxTrail = 6000; 
-                    this.stepSize = 5; 
+                    this.maxTrail = 4000;
+                    this.stepSize = 5;
                     this.colors = [
-                        [121, 255, 156], // Verde (#79ff9c)
-                        [255, 251, 118], // Amarillo (#fffb76)
-                        [75, 183, 255]   // Azulito (#4bb7ff)
+                        [121, 255, 156], // Verde
+                        [255, 251, 118], // Amarillo
+                        [75, 183, 255]   // Azul
                     ];
-                    this.init(w, h);
+                    this.init(w, h, startX, startY);
                 }
                 
-                init(w, h) {
+                init(w, h, startX, startY) {
                     this.walkers = [];
                     for(let i=0; i<this.numWalkers; i++) {
                         this.walkers.push({
-                            x: w/2 + (Math.random() - 0.5) * 200,
-                            y: h/2 + (Math.random() - 0.5) * 200,
-                            trail: [],
+                            x: startX,
+                            y: startY,
+                            trail: [{x: startX, y: startY, jump: false}],
                             color: this.colors[i]
                         });
                     }
-                    for(let step = 0; step < 4000; step++) { this.updateInternal(w, h); }
+                    for(let i=0; i<1500; i++) this.updateInternal(w, h);
                 }
-                
-                resize(w, h) { this.width = w; this.height = h; }
                 
                 updateInternal(w, h) {
                     for(let walker of this.walkers) {
                         const angle = Math.random() * Math.PI * 2;
-                        let newX = walker.x + Math.cos(angle) * this.stepSize;
-                        let newY = walker.y + Math.sin(angle) * this.stepSize;
-                        if (newX < 10) newX = 10 + Math.random() * 20;
-                        if (newX > w - 10) newX = w - 10 - Math.random() * 20;
-                        if (newY < 10) newY = 10 + Math.random() * 20;
-                        if (newY > h - 10) newY = h - 10 - Math.random() * 20;
-                        walker.x = newX; walker.y = newY;
-                        walker.trail.push({x: walker.x, y: walker.y});
+                        let nextX = walker.x + Math.cos(angle) * this.stepSize;
+                        let nextY = walker.y + Math.sin(angle) * this.stepSize;
+                        let jump = false;
+
+                        if (nextX < 0) { nextX = w; jump = true; }
+                        else if (nextX > w) { nextX = 0; jump = true; }
+                        if (nextY < 0) { nextY = h; jump = true; }
+                        else if (nextY > h) { nextY = 0; jump = true; }
+
+                        walker.x = nextX; walker.y = nextY;
+                        walker.trail.push({x: walker.x, y: walker.y, jump: jump});
+                        
                         if(walker.trail.length > this.maxTrail) walker.trail.shift();
                     }
                 }
                 
                 update(w, h) {
-                    for(let i=0; i < 25; i++) { this.updateInternal(w, h); }
+                    for(let i=0; i<15; i++) this.updateInternal(w, h);
                 }
                 
                 draw(ctx, w, h) {
-                    ctx.fillStyle = '#f4f7fa'; 
+                    ctx.fillStyle = '#f4f7fa';
                     ctx.fillRect(0, 0, w, h);
-                    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+                    
                     for(let walker of this.walkers) {
                         if(walker.trail.length < 2) continue;
-                        const rgb = walker.color;
+                        
                         ctx.beginPath();
-                        ctx.lineWidth = 2.0;
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeStyle = `rgba(${walker.color[0]}, ${walker.color[1]}, ${walker.color[2]}, 0.28)`;
+                        
                         ctx.moveTo(walker.trail[0].x, walker.trail[0].y);
-                        for(let i=1; i<walker.trail.length; i++) { ctx.lineTo(walker.trail[i].x, walker.trail[i].y); }
-                        ctx.strokeStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.3)`;
+                        for(let i=1; i<walker.trail.length; i++) {
+                            const p = walker.trail[i];
+                            if (p.jump) ctx.moveTo(p.x, p.y); 
+                            else ctx.lineTo(p.x, p.y);
+                        }
                         ctx.stroke();
-                        ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-                        ctx.beginPath(); ctx.arc(walker.x, walker.y, 4, 0, Math.PI*2); ctx.fill();
+
+                        ctx.fillStyle = `rgb(${walker.color[0]}, ${walker.color[1]}, ${walker.color[2]})`;
+                        ctx.beginPath(); ctx.arc(walker.x, walker.y, 3, 0, Math.PI*2); ctx.fill();
                     }
                 }
             }
-            
-            let simulation = null;
+
             function handleResize() {
-                width = window.innerWidth; height = window.innerHeight;
-                canvas.width = width; canvas.height = height;
-                if (simulation) simulation.resize(width, height);
+                width = window.innerWidth; 
+                height = window.innerHeight;
+                canvas.width = width; 
+                canvas.height = height;
+
+                let startX = width / 2; 
+                let startY = height / 2; 
+
+                if (photo) {
+                    const rect = photo.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) {
+                        startX = rect.left + (rect.width / 2);
+                        startY = rect.top + (rect.height / 2);
+                    }
+                }
+
+                if (!simulation) {
+                    simulation = new BioWalk(width, height, startX, startY);
+                } else {
+                    simulation.init(width, height, startX, startY);
+                }
             }
-            function animate() {
-                if (!simulation) return;
-                simulation.update(width, height); 
-                simulation.draw(ctx, width, height);
-                requestAnimationFrame(animate);
+
+            function loop() {
+                if(simulation) {
+                    simulation.update(width, height);
+                    simulation.draw(ctx, width, height);
+                }
+                requestAnimationFrame(loop);
             }
-            handleResize();
-            simulation = new RandomWalk(width, height);
+            
             window.addEventListener('resize', handleResize);
-            requestAnimationFrame(animate);
+            
+            if (photo.complete) {
+                handleResize();
+            } else {
+                photo.onload = handleResize;
+                photo.onerror = handleResize; 
+            }
+            
+            loop();
         })();
     </script>
 </body>
