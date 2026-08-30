@@ -36,7 +36,7 @@
             z-index: -1; pointer-events: none;
         }
 
-        /* --- SIDEBAR FIJA Y UNIFICADA --- */
+        /* --- SIDEBAR FIJA Y HOMOGÉNEA --- */
         .sidebar {
             position: fixed;
             left: 0; top: 0; bottom: 0;
@@ -53,6 +53,7 @@
 
         .phi-logo { 
             width: 22px; 
+            height: auto;
             opacity: 0.7; 
             margin-bottom: 1rem; 
         }
@@ -61,7 +62,7 @@
             list-style: none; 
             display: flex; 
             flex-direction: column; 
-            gap: 1.2rem; /* Espaciado idéntico al de Research */
+            gap: 1.2rem; /* Espaciado idéntico al de las demás páginas */
         }
 
         .nav-links a { 
@@ -75,7 +76,7 @@
             color: var(--accent); 
         }
 
-        /* --- LAYOUT PRINCIPAL ALINEADO A LA IZQUIERDA --- */
+        /* --- CONTENEDOR PRINCIPAL ALINEADO A LA IZQUIERDA --- */
         .container {
             position: relative;
             z-index: 10;
@@ -173,6 +174,7 @@
             .sidebar { width: 70px; padding: 2rem 1rem; }
             .sidebar .nav-links span, .sidebar .phi-logo { display: none; }
             .container { padding: 45px 5% 45px 90px; }
+            h1 { margin-bottom: 2rem; }
         }
     </style>
 </head>
