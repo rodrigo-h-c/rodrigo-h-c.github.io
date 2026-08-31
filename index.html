@@ -6,7 +6,13 @@
     <title>Rodrigo Hernández-Cervantes</title>
     <link rel="icon" type="image/png" href="phi.png">
     <style>
-        /* --- ESTILOS GENERALES (Minimalismo Académico) --- */
+        :root {
+            --bg: #f4f7fa;
+            --text: #000000;
+            --accent: #055edf; /* Azul académico por defecto para Home */
+            --header-h: 55px;
+        }
+
         * { 
             margin: 0; 
             padding: 0; 
@@ -16,9 +22,10 @@
         }
 
         body {
-            background-color: #f4f7fa;
-            color: #000000;
+            background-color: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
+            min-height: 100vh;
             font-size: 11pt; /* Letra general tamaño 11 */
         }
 
@@ -33,27 +40,73 @@
             pointer-events: none;
         }
 
+        /* --- BARRA SUPERIOR FIJA Y HOMOGÉNEA --- */
+        .top-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--header-h);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            z-index: 100;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .phi-logo { 
+            width: 20px; 
+            height: auto;
+            opacity: 0.7; 
+        }
+
+        .nav-links { 
+            list-style: none; 
+            display: flex; 
+            align-items: center;
+            gap: 25px; /* Espaciado horizontal uniforme */
+        }
+
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text); 
+            font-size: 11pt; 
+            transition: color 0.3s; 
+        }
+
+        .nav-links a:hover { 
+            color: var(--accent); 
+        }
+
         /* --- CONTENEDOR PRINCIPAL --- */
         .content-wrapper {
             max-width: 900px;
-            margin: 8vh auto;
-            padding: 0 40px;
+            margin: 0 auto;
+            padding: calc(var(--header-h) + 40px) 40px 5rem 40px;
             position: relative;
             z-index: 10;
         }
 
-        /* --- ENCABEZADO Y MENÚ HORIZONTAL --- */
+        /* --- ENCABEZADO CON NOMBRE Y ESCUDO --- */
         .header-row {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: baseline;
             margin-bottom: 25px;
         }
 
-        .header-container {
-            display: inline-flex;
-            align-items: baseline;
-            position: relative;
+        .header-container h1 {
+            font-size: 13pt; /* Título tamaño 13 */
+            font-weight: bold;
+            white-space: nowrap;
+            color: #000000;
         }
 
         /* Escudo alineado a la derecha, a la altura del nombre */
@@ -62,74 +115,6 @@
             width: auto;
             flex-shrink: 0;
             margin-left: 20px;
-        }
-
-        /* El nombre actúa como el activador principal */
-        .header-container h1 {
-            font-size: 13pt; /* Título tamaño 13 */
-            font-weight: bold;
-            white-space: nowrap;
-            color: #000000;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .nav-group {
-            display: inline-grid;
-            align-items: baseline;
-            position: relative;
-            margin-left: 12px;
-        }
-
-        .nav-hint,
-        .nav-bar {
-            grid-area: 1 / 1;
-            white-space: nowrap;
-        }
-
-        /* Nota guía al lado del nombre */
-        .nav-hint {
-            font-size: 10pt;
-            color: #666;
-            font-style: italic;
-            opacity: 1;
-            transition: opacity 0.25s ease;
-        }
-
-        /* La barra de navegación (inicialmente oculta) */
-        .nav-bar {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            opacity: 0;
-            pointer-events: none;
-            border-bottom: 1px solid #000;
-            padding-bottom: 2px;
-            transition: opacity 0.25s ease;
-            z-index: 20; /* Asegura que esté por encima de cualquier elemento flotante */
-        }
-
-        /* Clases de control mediante JavaScript */
-        .header-container.active .nav-hint {
-            opacity: 0;
-        }
-
-        .header-container.active .nav-bar {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .nav-bar a {
-            text-decoration: none;
-            color: #000000;
-            font-size: 11pt;
-            transition: color 0.2s;
-            position: relative;
-            z-index: 21; /* Garantiza clickabilidad absoluta en los enlaces */
-        }
-
-        .nav-bar a:hover {
-            color: #055edf;
         }
 
         /* --- COLUMNAS (FOTO Y BIO) --- */
@@ -169,47 +154,47 @@
         }
         
         .text-col a:hover {
-            color: #055edf;
+            color: var(--accent);
         }
 
         /* --- RESPONSIVE (Celulares) --- */
         @media (max-width: 768px) {
-            .content-wrapper { margin: 5vh auto; padding: 0 25px; }
+            .top-bar { padding: 0 20px; }
+            .nav-links { gap: 15px; }
+            .nav-links a { font-size: 10pt; }
+            .content-wrapper { padding: calc(var(--header-h) + 25px) 25px 45px 25px; }
             .main-columns { flex-direction: column; }
             .photo-col { width: 180px; margin-bottom: 15px; }
             .header-row { align-items: center; }
-            .header-container { flex-direction: column; align-items: flex-start; }
-            .nav-group { margin-left: 0; margin-top: 5px; }
-            .nav-bar { flex-wrap: wrap; row-gap: 6px; }
             .crest-logo { height: 26px; margin-left: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Canvas de Movimiento Browniano -->
     <canvas id="canvas-bio"></canvas>
+
+    <nav class="top-bar">
+        <div class="top-bar-left">
+            <img src="phi.png" alt="Phi" class="phi-logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="research.html">Research</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="agora.html">Social Agora</a></li>
+            <li><a href="cv.html">CV</a></li>
+        </ul>
+    </nav>
 
     <div class="content-wrapper">
         
-        <!-- Encabezado con control interactivo robusto -->
         <div class="header-row">
-            <div class="header-container" id="headerNav">
+            <div class="header-container">
                 <h1>Rodrigo Hernández-Cervantes</h1>
-                <div class="nav-group">
-                    <span class="nav-hint">(hover or click to navigate)</span>
-                    <nav class="nav-bar">
-                        <a href="research.html">Research</a>
-                        <a href="projects.html">Projects</a>
-                        <a href="agora.html">Social Agora</a>
-                        <a href="cv.html">CV</a>
-                    </nav>
-                </div>
             </div>
             <img src="phi.png" alt="Escudo" class="crest-logo">
         </div>
 
-        <!-- Columnas: Foto y Texto Actualizado -->
         <div class="main-columns">
             <div class="photo-col">
                 <img src="fotospagpro/perfil.jpg" alt="Rodrigo Hernández-Cervantes" id="profilePhoto">
@@ -233,41 +218,6 @@
     </div>
 
     <script>
-        // --- LÓGICA DEL MENÚ INTERACTIVO MEJORADA (Hover + Click para móviles y estabilidad) ---
-        (function() {
-            const headerNav = document.getElementById('headerNav');
-            let hideTimeout = null;
-
-            // Mostrar al pasar el mouse
-            headerNav.addEventListener('mouseenter', () => {
-                clearTimeout(hideTimeout);
-                headerNav.classList.add('active');
-            });
-
-            // Ocultar al quitar el mouse con retraso
-            headerNav.addEventListener('mouseleave', () => {
-                hideTimeout = setTimeout(() => {
-                    headerNav.classList.remove('active');
-                }, 400);
-            });
-
-            // Permitir abrir/cerrar mediante clic directo (indispensable para celulares)
-            headerNav.addEventListener('click', (e) => {
-                // Si se hace clic directamente en un enlace dentro del menú, permitimos la navegación normal
-                if (e.target.tagName === 'A') return;
-
-                e.stopPropagation();
-                headerNav.classList.toggle('active');
-            });
-
-            // Cerrar el menú si se hace clic en cualquier otra parte de la página
-            document.addEventListener('click', (e) => {
-                if (!headerNav.contains(e.target)) {
-                    headerNav.classList.remove('active');
-                }
-            });
-        })();
-
         // --- LÓGICA DEL FONDO DINÁMICO (3 Movimientos Brownianos) ---
         (function(){
             const canvas = document.getElementById('canvas-bio');
