@@ -10,7 +10,7 @@
             --bg: #f4f7fa;
             --text: #000000;
             --accent: #00d1ff; /* Cian característico para Projects */
-            --sidebar-w: 220px;
+            --header-h: 70px;
         }
 
         * { 
@@ -36,33 +36,38 @@
             z-index: -1; pointer-events: none;
         }
 
-        /* --- SIDEBAR FIJA Y HOMOGÉNEA --- */
-        .sidebar {
+        /* --- BARRA SUPERIOR FIJA Y HOMOGÉNEA --- */
+        .top-bar {
             position: fixed;
-            left: 0; top: 0; bottom: 0;
-            width: var(--sidebar-w);
+            top: 0; left: 0; right: 0;
+            height: var(--header-h);
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(12px);
-            border-right: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
             z-index: 100;
-            padding: 2.5rem 1.5rem;
+            padding: 0 40px;
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .phi-logo { 
-            width: 22px; 
+            width: 20px; 
             height: auto;
             opacity: 0.7; 
-            margin-bottom: 1rem; 
         }
 
         .nav-links { 
             list-style: none; 
             display: flex; 
-            flex-direction: column; 
-            gap: 1.2rem; 
+            align-items: center;
+            gap: 25px; /* Espaciado horizontal uniforme */
         }
 
         .nav-links a { 
@@ -80,7 +85,7 @@
         .container {
             position: relative;
             z-index: 10;
-            padding: 5rem 10% 5rem calc(var(--sidebar-w) + 40px);
+            padding: calc(var(--header-h) + 50px) 10% 5rem 10%;
             max-width: 1000px;
             margin: 0 auto;
             text-align: left;
@@ -171,9 +176,10 @@
         }
 
         @media (max-width: 768px) {
-            .sidebar { width: 70px; padding: 2rem 1rem; }
-            .sidebar .nav-links span, .sidebar .phi-logo { display: none; }
-            .container { padding: 45px 5% 45px 90px; }
+            .top-bar { padding: 0 20px; }
+            .nav-links { gap: 15px; }
+            .nav-links a { font-size: 10pt; }
+            .container { padding: calc(var(--header-h) + 30px) 5% 45px 5%; }
             h1 { margin-bottom: 2rem; }
         }
     </style>
@@ -182,9 +188,10 @@
 
     <canvas id="canvas-projects"></canvas>
 
-    <!-- Menú Lateral Fijo y Homogéneo -->
-    <nav class="sidebar">
-        <img src="phi.png" alt="Phi" class="phi-logo">
+    <nav class="top-bar">
+        <div class="top-bar-left">
+            <img src="phi.png" alt="Phi" class="phi-logo">
+        </div>
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="research.html">Research</a></li>
