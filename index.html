@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rodrigo Hernández-Cervantes</title>
     
-    <!-- SEO & Keywords (Nombre, Economist, Labor Economist y variantes académicas) -->
+    <!-- SEO & Keywords -->
     <meta name="description" content="Personal and professional website of Rodrigo Hernández-Cervantes, undergraduate student in Economics at UNAM. Academic interests include macroeconomics, labor economics, and quantitative modeling.">
-    <meta name="keywords" content="Rodrigo Hernández-Cervantes, rodrigo hernández, rodrigo hernandez cervantes, hernandez cervantez, hernández-cervantes, hernández-cervantes, Rodrigo Hernandez, rodrigo hernandez, economist, economista, labor economist, economic history, macroeconomics, UNAM economics">
+    <meta name="keywords" content="Rodrigo Hernández-Cervantes, rodrigo hernández, rodrigo hernandez cervantes, hernandez cervantez, hernández-cervantes, Rodrigo Hernandez, economist, economista, labor economist, economic history, macroeconomics, UNAM economics">
     <meta name="author" content="Rodrigo Hernández-Cervantes">
     <meta name="robots" content="index, follow">
 
@@ -25,7 +26,7 @@
         :root {
             --bg: #f4f7fa;
             --text: #000000;
-            --accent: #055edf; /* Azul académico por defecto para Home */
+            --accent: #055edf;
             --header-h: 55px;
         }
 
@@ -42,7 +43,7 @@
             color: var(--text);
             overflow-x: hidden;
             min-height: 100vh;
-            font-size: 11pt; /* Letra general tamaño 11 */
+            font-size: 11pt;
         }
 
         /* --- CANVAS (FONDO BROWNIANO) --- */
@@ -56,7 +57,7 @@
             pointer-events: none;
         }
 
-        /* --- BARRA SUPERIOR FIJA Y HOMOGÉNEA --- */
+        /* --- BARRA SUPERIOR FIJA --- */
         .top-bar {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -87,7 +88,7 @@
             list-style: none; 
             display: flex; 
             align-items: center;
-            gap: 25px; /* Espaciado horizontal uniforme */
+            gap: 25px;
         }
 
         .nav-links a { 
@@ -110,7 +111,7 @@
             z-index: 10;
         }
 
-        /* --- ENCABEZADO CON NOMBRE Y ESCUDO --- */
+        /* --- ENCABEZADO --- */
         .header-row {
             display: flex;
             justify-content: space-between;
@@ -119,13 +120,12 @@
         }
 
         .header-container h1 {
-            font-size: 13pt; /* Título tamaño 13 */
+            font-size: 13pt;
             font-weight: bold;
             white-space: nowrap;
             color: #000000;
         }
 
-        /* Escudo alineado a la derecha, a la altura del nombre */
         .crest-logo {
             height: 34px;
             width: auto;
@@ -173,27 +173,168 @@
             color: var(--accent);
         }
 
+
+        /* =====================================================
+           ACADEMIC & PROFESSIONAL UPDATES TICKER
+           ===================================================== */
+
+        .updates-ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 29px;
+
+            background: rgba(244, 247, 250, 0.96);
+            backdrop-filter: blur(10px);
+
+            border-top: 1px solid rgba(5, 94, 223, 0.18);
+
+            z-index: 200;
+
+            display: flex;
+            align-items: center;
+
+            overflow: hidden;
+
+            font-size: 9.5pt;
+        }
+
+        .updates-label {
+            flex-shrink: 0;
+
+            background: rgba(5, 94, 223, 0.88);
+            color: #ffffff;
+
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 13px;
+
+            font-size: 8.5pt;
+            letter-spacing: 0.2px;
+
+            z-index: 2;
+        }
+
+        .updates-window {
+            overflow: hidden;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        .updates-track {
+            display: inline-block;
+            padding-left: 100%;
+
+            animation: ticker-scroll 75s linear infinite;
+        }
+
+        .updates-track:hover {
+            animation-play-state: paused;
+        }
+
+        .update-item {
+            display: inline-block;
+            margin-right: 90px;
+        }
+
+        .update-item::before {
+            content: "•";
+            color: var(--accent);
+            margin-right: 9px;
+            font-weight: bold;
+        }
+
+        .update-item a {
+            color: #000000;
+            text-decoration: underline;
+        }
+
+        .update-item a:hover {
+            color: var(--accent);
+        }
+
+        @keyframes ticker-scroll {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+
         /* --- RESPONSIVE (Celulares) --- */
         @media (max-width: 768px) {
-            .top-bar { padding: 0 20px; }
-            .nav-links { gap: 15px; }
-            .nav-links a { font-size: 10pt; }
-            .content-wrapper { padding: calc(var(--header-h) + 25px) 25px 45px 25px; }
-            .main-columns { flex-direction: column; }
-            .photo-col { width: 180px; margin-bottom: 15px; }
-            .header-row { align-items: center; }
-            .crest-logo { height: 26px; margin-left: 10px; }
+
+            .top-bar { 
+                padding: 0 20px; 
+            }
+
+            .nav-links { 
+                gap: 15px; 
+            }
+
+            .nav-links a { 
+                font-size: 10pt; 
+            }
+
+            .content-wrapper { 
+                padding: calc(var(--header-h) + 25px) 25px 45px 25px; 
+            }
+
+            .main-columns { 
+                flex-direction: column; 
+            }
+
+            .photo-col { 
+                width: 180px; 
+                margin-bottom: 15px; 
+            }
+
+            .header-row { 
+                align-items: center; 
+            }
+
+            .crest-logo { 
+                height: 26px; 
+                margin-left: 10px; 
+            }
+
+            .updates-ticker {
+                height: 27px;
+                font-size: 8.5pt;
+            }
+
+            .updates-label {
+                font-size: 7.5pt;
+                padding: 0 9px;
+            }
+
+            .updates-track {
+                animation-duration: 60s;
+            }
         }
+
     </style>
 </head>
+
 <body>
 
     <canvas id="canvas-bio"></canvas>
+
+    <!-- =========================
+         NAVIGATION
+         ========================= -->
 
     <nav class="top-bar">
         <div class="top-bar-left">
             <img src="phi.png" alt="Phi" class="phi-logo">
         </div>
+
         <ul class="nav-links">
             <li><a href="research.html">Research</a></li>
             <li><a href="projects.html">Projects</a></li>
@@ -202,164 +343,391 @@
         </ul>
     </nav>
 
+
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
     <div class="content-wrapper">
         
         <div class="header-row">
             <div class="header-container">
                 <h1>Rodrigo Hernández-Cervantes</h1>
             </div>
+
             <img src="phi.png" alt="Escudo" class="crest-logo">
         </div>
 
+
         <div class="main-columns">
+
             <div class="photo-col">
-                <img src="fotospagpro/perfil.jpg" alt="Rodrigo Hernández-Cervantes" id="profilePhoto">
+                <img 
+                    src="fotospagpro/perfil.jpg" 
+                    alt="Rodrigo Hernández-Cervantes" 
+                    id="profilePhoto"
+                >
             </div>
+
+
             <div class="text-col">
+
                 <p>
                     Hello, I'm Rodrigo. I am an undergraduate student in Economics at the <a href="https://www.unam.mx/" target="_blank">National Autonomous University of Mexico (UNAM)</a>, where I also work as a Teaching Assistant for General Economic History.
                 </p>
+
                 <p>
                     My research interests focus primarily on macroeconomics, labor, and behavioral economics, and I aspire to conduct academic research in these fields. I am currently looking for graduate opportunities and aiming to pursue an MSc in Economics abroad to take the next step in my research path.
                 </p>
+
                 <p>
                     When I step away from economics, you will likely find me on the tennis court (Nole is my undisputed GOAT). I am a huge cinephile and melomaniac, and I play guitar in an admittedly terrible band called Fenomenólogos. Beyond that, my reading list is usually packed with literature, anthropology, and philosophy. I truly believe that by building and improving our institutions, we can create better opportunities for the people of Mexico.
                 </p>
+
                 <p>
                     Feel free to reach me at: <a href="mailto:rohrc14@gmail.com">rohrc14@gmail.com</a>
                 </p>
-            </div>
+
             </div>
         </div>
     </div>
 
+
+    <!-- =====================================================
+         ACADEMIC & PROFESSIONAL UPDATES
+         ===================================================== -->
+
+    <div class="updates-ticker">
+
+        <div class="updates-label">
+            Academic &amp; Professional Updates
+        </div>
+
+        <div class="updates-window">
+
+            <div class="updates-track">
+
+                <span class="update-item">
+                    I recently completed my position as a Research Assistant at Banco de México's Directorate General of Economic Research, where I worked on international macroeconomic and financial analysis.
+                </span>
+
+                <span class="update-item">
+                    At Banco de México, I developed macroeconomic projection dashboards, debt-market heatmaps, and market expectations tables using Bloomberg Terminal, R, and VBA.
+                </span>
+
+                <span class="update-item">
+                    I am currently serving as Secretary of Dissemination and Editorial Development at Movimiento Ciudadano's National Editorial Commission.
+                </span>
+
+                <span class="update-item">
+                    I co-created and coordinate Archivo 21, an editorial and documentary project developed through the National Editorial Commission.
+                </span>
+
+                <span class="update-item">
+                    I continue working as a Teaching Assistant for General Economic History at the National Autonomous University of Mexico.
+                </span>
+
+
+                <!-- REPEATED ITEMS FOR CONTINUOUS SCROLL -->
+
+                <span class="update-item">
+                    I recently completed my position as a Research Assistant at Banco de México's Directorate General of Economic Research.
+                </span>
+
+                <span class="update-item">
+                    I am currently serving as Secretary of Dissemination and Editorial Development at Movimiento Ciudadano's National Editorial Commission.
+                </span>
+
+                <span class="update-item">
+                    I co-created and coordinate Archivo 21, an editorial and documentary project developed through the National Editorial Commission.
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BROWNIAN MOTION BACKGROUND
+         ===================================================== -->
+
     <script>
-        // --- LÓGICA DEL FONDO DINÁMICO (3 Movimientos Brownianos) ---
+
         (function(){
+
             const canvas = document.getElementById('canvas-bio');
             const ctx = canvas.getContext('2d');
             const photo = document.getElementById('profilePhoto');
+
             let width, height;
             let simulation = null;
-            
+
+
             class BioWalk {
+
                 constructor(w, h, startX, startY) {
+
                     this.walkers = [];
-                    this.numWalkers = 3; 
+                    this.numWalkers = 3;
                     this.maxTrail = 4000;
                     this.stepSize = 5;
+
                     this.colors = [
-                        [121, 255, 156], // Verde
-                        [255, 251, 118], // Amarillo
-                        [75, 183, 255]   // Azul
+                        [121, 255, 156],
+                        [255, 251, 118],
+                        [75, 183, 255]
                     ];
+
                     this.init(w, h, startX, startY);
                 }
-                
+
+
                 init(w, h, startX, startY) {
+
                     this.walkers = [];
-                    for(let i=0; i<this.numWalkers; i++) {
+
+                    for(let i = 0; i < this.numWalkers; i++) {
+
                         this.walkers.push({
+
                             x: startX,
                             y: startY,
-                            trail: [{x: startX, y: startY, jump: false}],
+
+                            trail: [
+                                {
+                                    x: startX,
+                                    y: startY,
+                                    jump: false
+                                }
+                            ],
+
                             color: this.colors[i]
+
                         });
+
                     }
-                    for(let i=0; i<1500; i++) this.updateInternal(w, h);
+
+                    for(let i = 0; i < 1500; i++) {
+                        this.updateInternal(w, h);
+                    }
                 }
-                
+
+
                 updateInternal(w, h) {
+
                     for(let walker of this.walkers) {
+
                         const angle = Math.random() * Math.PI * 2;
+
                         let nextX = walker.x + Math.cos(angle) * this.stepSize;
                         let nextY = walker.y + Math.sin(angle) * this.stepSize;
+
                         let jump = false;
 
-                        if (nextX < 0) { nextX = w; jump = true; }
-                        else if (nextX > w) { nextX = 0; jump = true; }
-                        if (nextY < 0) { nextY = h; jump = true; }
-                        else if (nextY > h) { nextY = 0; jump = true; }
 
-                        walker.x = nextX; walker.y = nextY;
-                        walker.trail.push({x: walker.x, y: walker.y, jump: jump});
-                        
-                        if(walker.trail.length > this.maxTrail) walker.trail.shift();
+                        if (nextX < 0) {
+                            nextX = w;
+                            jump = true;
+                        }
+
+                        else if (nextX > w) {
+                            nextX = 0;
+                            jump = true;
+                        }
+
+
+                        if (nextY < 0) {
+                            nextY = h;
+                            jump = true;
+                        }
+
+                        else if (nextY > h) {
+                            nextY = 0;
+                            jump = true;
+                        }
+
+
+                        walker.x = nextX;
+                        walker.y = nextY;
+
+                        walker.trail.push({
+                            x: walker.x,
+                            y: walker.y,
+                            jump: jump
+                        });
+
+
+                        if(walker.trail.length > this.maxTrail) {
+                            walker.trail.shift();
+                        }
+
                     }
+
                 }
-                
+
+
                 update(w, h) {
-                    for(let i=0; i<15; i++) this.updateInternal(w, h);
+
+                    for(let i = 0; i < 15; i++) {
+                        this.updateInternal(w, h);
+                    }
+
                 }
-                
+
+
                 draw(ctx, w, h) {
+
                     ctx.fillStyle = '#f4f7fa';
                     ctx.fillRect(0, 0, w, h);
-                    
+
+
                     for(let walker of this.walkers) {
+
                         if(walker.trail.length < 2) continue;
-                        
+
+
                         ctx.beginPath();
+
                         ctx.lineWidth = 1.5;
+
                         ctx.strokeStyle = `rgba(${walker.color[0]}, ${walker.color[1]}, ${walker.color[2]}, 0.28)`;
-                        
-                        ctx.moveTo(walker.trail[0].x, walker.trail[0].y);
-                        for(let i=1; i<walker.trail.length; i++) {
+
+
+                        ctx.moveTo(
+                            walker.trail[0].x,
+                            walker.trail[0].y
+                        );
+
+
+                        for(let i = 1; i < walker.trail.length; i++) {
+
                             const p = walker.trail[i];
-                            if (p.jump) ctx.moveTo(p.x, p.y); 
-                            else ctx.lineTo(p.x, p.y);
+
+                            if (p.jump) {
+                                ctx.moveTo(p.x, p.y);
+                            }
+
+                            else {
+                                ctx.lineTo(p.x, p.y);
+                            }
+
                         }
+
                         ctx.stroke();
 
+
                         ctx.fillStyle = `rgb(${walker.color[0]}, ${walker.color[1]}, ${walker.color[2]})`;
-                        ctx.beginPath(); ctx.arc(walker.x, walker.y, 3, 0, Math.PI*2); ctx.fill();
+
+                        ctx.beginPath();
+
+                        ctx.arc(
+                            walker.x,
+                            walker.y,
+                            3,
+                            0,
+                            Math.PI * 2
+                        );
+
+                        ctx.fill();
+
                     }
+
                 }
+
             }
+
 
             function handleResize() {
-                width = window.innerWidth; 
+
+                width = window.innerWidth;
                 height = window.innerHeight;
-                canvas.width = width; 
+
+                canvas.width = width;
                 canvas.height = height;
 
-                let startX = width / 2; 
-                let startY = height / 2; 
+
+                let startX = width / 2;
+                let startY = height / 2;
+
 
                 if (photo) {
+
                     const rect = photo.getBoundingClientRect();
+
                     if (rect.width > 0 && rect.height > 0) {
+
                         startX = rect.left + (rect.width / 2);
                         startY = rect.top + (rect.height / 2);
+
                     }
+
                 }
+
 
                 if (!simulation) {
-                    simulation = new BioWalk(width, height, startX, startY);
-                } else {
-                    simulation.init(width, height, startX, startY);
+
+                    simulation = new BioWalk(
+                        width,
+                        height,
+                        startX,
+                        startY
+                    );
+
                 }
+
+                else {
+
+                    simulation.init(
+                        width,
+                        height,
+                        startX,
+                        startY
+                    );
+
+                }
+
             }
 
+
             function loop() {
+
                 if(simulation) {
+
                     simulation.update(width, height);
                     simulation.draw(ctx, width, height);
+
                 }
+
                 requestAnimationFrame(loop);
+
             }
-            
+
+
             window.addEventListener('resize', handleResize);
-            
+
+
             if (photo.complete) {
+
                 handleResize();
-            } else {
-                photo.onload = handleResize;
-                photo.onerror = handleResize; 
+
             }
-            
+
+            else {
+
+                photo.onload = handleResize;
+                photo.onerror = handleResize;
+
+            }
+
+
             loop();
+
         })();
+
     </script>
+
 </body>
 </html>
+```
