@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gallery — Rodrigo Hernández Cervantes</title>
+
+    <style>
+        :root {
+            --bg: #f4f7fa;
+            --text: #000000;
+
+            --accent: #b21f2d;
+            --accent-soft: rgba(178, 31, 45, 0.18);
+
+            --blue: #055edf;
+
+            --header-h: 55px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Times New Roman", Times, serif;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           ONE RED STOCHASTIC PROCESS
+        ========================================================= */
+
+        #stochasticCanvas {
+            position: fixed;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            z-index: -1;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================================================
+           TOP NAVIGATION
+        ========================================================= */
+
+        .top-bar {
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: var(--header-h);
+
+            background:
+                rgba(244, 247, 250, 0.93);
+
+            backdrop-filter: blur(10px);
+
+            border-bottom:
+                1px solid rgba(178, 31, 45, 0.14);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 28px;
+
+            z-index: 100;
+        }
+
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+        }
+
+
+        .phi-easter-egg {
+            display: flex;
+            align-items: center;
+
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        .phi-easter-egg .phi-logo {
+            width: 25px;
+            height: 25px;
+
+            object-fit: contain;
+
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease;
+        }
+
+
+        .phi-easter-egg:hover .phi-logo {
+            opacity: 1;
+            transform: rotate(8deg);
+        }
+
+
+        .nav {
+            display: flex;
+            align-items: center;
+
+            gap: 26px;
+        }
+
+
+        .nav a {
+            color: #000000;
+
+            text-decoration: none;
+
+            font-size: 10.5pt;
+
+            transition:
+                color 0.2s ease;
+        }
+
+
+        .nav a:hover {
+            color: var(--accent);
+        }
+
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        main {
+            width:
+                min(1100px, calc(100% - 50px));
+
+            margin: 0 auto;
+
+            padding-top:
+                calc(var(--header-h) + 55px);
+
+            padding-bottom: 90px;
+        }
+
+
+        .page-heading {
+            margin-bottom: 34px;
+        }
+
+
+        .page-heading h1 {
+            margin: 0 0 8px 0;
+
+            font-size: 25pt;
+
+            font-weight: normal;
+
+            letter-spacing: -0.3px;
+        }
+
+
+        .page-heading p {
+            margin: 0;
+
+            font-size: 11pt;
+
+            line-height: 1.6;
+
+            max-width: 760px;
+        }
+
+
+        /* =========================================================
+           PHOTO GRID
+        ========================================================= */
+
+        .photo-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 16px;
+        }
+
+
+        .photo-card {
+            position: relative;
+
+            aspect-ratio: 1 / 1;
+
+            overflow: hidden;
+
+            background:
+                rgba(255, 255, 255, 0.6);
+
+            border:
+                1px solid rgba(0, 0, 0, 0.08);
+
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.035);
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+
+            transition:
+                transform 0.35s ease,
+                filter 0.35s ease;
+        }
+
+
+        .photo-card:hover {
+            border-color:
+                rgba(178, 31, 45, 0.35);
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.10);
+        }
+
+
+        .photo-card:hover img {
+            transform: scale(1.04);
+
+            filter: brightness(0.78);
+        }
+
+
+        /* =========================================================
+           VIEW FULL SIZE HOVER LABEL
+        ========================================================= */
+
+        .photo-overlay {
+            position: absolute;
+
+            inset: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                rgba(0, 0, 0, 0.32);
+
+            opacity: 0;
+
+            transition:
+                opacity 0.3s ease;
+        }
+
+
+        .photo-card:hover .photo-overlay {
+            opacity: 1;
+        }
+
+
+        .photo-overlay span {
+            color: #ffffff;
+
+            font-size: 10pt;
+
+            border:
+                1px solid rgba(255, 255, 255, 0.85);
+
+            padding: 7px 11px;
+
+            background:
+                rgba(0, 0, 0, 0.16);
+
+            backdrop-filter: blur(3px);
+
+            letter-spacing: 0.1px;
+        }
+
+
+        /* =========================================================
+           UPDATES TICKER
+        ========================================================= */
+
+        .updates-ticker {
+            position: fixed;
+
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 29px;
+
+            background:
+                rgba(244, 247, 250, 0.96);
+
+            backdrop-filter: blur(10px);
+
+            border-top:
+                1px solid var(--accent-soft);
+
+            z-index: 200;
+
+            display: flex;
+            align-items: center;
+
+            overflow: hidden;
+
+            font-size: 9.5pt;
+
+            transition:
+                background 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+
+        .updates-label {
+            flex-shrink: 0;
+
+            background: var(--blue);
+
+            color: #ffffff;
+
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 15px;
+
+            font-size: 8.5pt;
+
+            letter-spacing: 0.2px;
+
+            z-index: 2;
+
+            transition:
+                background 0.3s ease;
+        }
+
+
+        .updates-window {
+            flex: 1;
+
+            overflow: hidden;
+
+            white-space: nowrap;
+        }
+
+
+        .updates-track {
+            display: inline-block;
+
+            white-space: nowrap;
+
+            padding-left: 100%;
+
+            animation:
+                ticker-scroll 80s linear infinite;
+        }
+
+
+        .updates-track:hover {
+            animation-play-state: paused;
+        }
+
+
+        .update-item {
+            display: inline-block;
+
+            margin-right: 100px;
+        }
+
+
+        .update-item::before {
+            content: "•";
+
+            color: var(--blue);
+
+            margin-right: 9px;
+
+            font-weight: bold;
+
+            transition:
+                color 0.3s ease;
+        }
+
+
+        /* Entire bar turns red */
+
+        .updates-ticker:hover {
+            background:
+                rgba(255, 248, 249, 0.97);
+
+            border-top-color:
+                rgba(178, 31, 45, 0.30);
+        }
+
+
+        .updates-ticker:hover .updates-label {
+            background: var(--accent);
+        }
+
+
+        .updates-ticker:hover .update-item::before {
+            color: var(--accent);
+        }
+
+
+        @keyframes ticker-scroll {
+
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 900px) {
+
+            main {
+                width:
+                    min(760px, calc(100% - 36px));
+            }
+
+
+            .photo-grid {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+
+
+            .nav {
+                gap: 18px;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            :root {
+                --header-h: 52px;
+            }
+
+
+            .top-bar {
+                padding: 0 17px;
+            }
+
+
+            .nav {
+                gap: 13px;
+            }
+
+
+            .nav a {
+                font-size: 9.5pt;
+            }
+
+
+            main {
+                width:
+                    calc(100% - 26px);
+
+                padding-top:
+                    calc(var(--header-h) + 38px);
+
+                padding-bottom: 75px;
+            }
+
+
+            .page-heading h1 {
+                font-size: 21pt;
+            }
+
+
+            .page-heading p {
+                font-size: 10.5pt;
+            }
+
+
+            .photo-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                gap: 10px;
+            }
+
+
+            .updates-ticker {
+                font-size: 8.5pt;
+            }
+
+
+            .updates-label {
+                padding: 0 11px;
+
+                font-size: 8pt;
+            }
+
+        }
+
+
+        @media (max-width: 430px) {
+
+            .nav {
+                gap: 9px;
+            }
+
+
+            .nav a {
+                font-size: 8.8pt;
+            }
+
+
+            .phi-easter-egg .phi-logo {
+                width: 22px;
+                height: 22px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         ONE RED STOCHASTIC PROCESS
+    ========================================================== -->
+
+    <canvas id="stochasticCanvas"></canvas>
+
+
+    <!-- =========================================================
+         TOP NAVIGATION
+    ========================================================== -->
+
+    <header class="top-bar">
+
+        <div class="top-bar-left">
+
+            <a
+                href="eg.html"
+                class="phi-easter-egg"
+                aria-label="Gallery"
+            >
+
+                <img
+                    src="phi.png"
+                    alt="Phi"
+                    class="phi-logo"
+                >
+
+            </a>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="research.html">
+                Research
+            </a>
+
+            <a href="projects.html">
+                Projects
+            </a>
+
+            <a href="agora.html">
+                Agora
+            </a>
+
+            <a href="cv.html">
+                CV
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+
+    <main>
+
+        <section class="page-heading">
+
+            <h1>
+                Gallery
+            </h1>
+
+            <p>
+                A small collection of photographs from academic,
+                professional, and personal encounters.
+            </p>
+
+        </section>
+
+
+        <!-- =====================================================
+             PHOTOGRAPHS
+             All images come from fotospagpro/
+        ====================================================== -->
+
+        <section class="photo-grid">
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto01.jpg"
+                    alt="Photo 01"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto02.jpg"
+                    alt="Photo 02"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto03.jpg"
+                    alt="Photo 03"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto04.jpg"
+                    alt="Photo 04"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto05.jpg"
+                    alt="Photo 05"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto06.jpg"
+                    alt="Photo 06"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto07.jpg"
+                    alt="Photo 07"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto08.jpg"
+                    alt="Photo 08"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto09.jpg"
+                    alt="Photo 09"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto10.jpg"
+                    alt="Photo 10"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto11.jpg"
+                    alt="Photo 11"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="photo-card">
+
+                <img
+                    src="fotospagpro/foto12.jpg"
+                    alt="Photo 12"
+                    loading="lazy"
+                >
+
+                <div class="photo-overlay">
+                    <span>
+                        View full size
+                    </span>
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         UPDATES
+    ========================================================== -->
+
+    <div class="updates-ticker">
+
+        <div class="updates-label">
+            Updates
+        </div>
+
+
+        <div class="updates-window">
+
+            <div class="updates-track">
+
+
+                <span class="update-item">
+                    Mar.–Sep. 2026 — Research Assistant,
+                    Directorate General of Economic Research,
+                    Banco de México.
+                </span>
+
+
+                <span class="update-item">
+                    Mar.–Sep. 2026 — International macroeconomic
+                    and financial analysis, including market
+                    expectations, GDP projections, debt-market
+                    heatmaps, and automated weekly indicators.
+                </span>
+
+
+                <span class="update-item">
+                    Current — Secretary of Dissemination and
+                    Editorial Development, National Editorial
+                    Commission, Movimiento Ciudadano.
+                </span>
+
+
+                <span class="update-item">
+                    Current — Archivo 21, editorial and documentary
+                    project developed through the National Editorial
+                    Commission.
+                </span>
+
+
+                <span class="update-item">
+                    Current — Teaching Assistant, General Economic
+                    History, National Autonomous University of Mexico.
+                </span>
+
+
+                <!-- Duplicate for continuous scrolling -->
+
+
+                <span class="update-item">
+                    Mar.–Sep. 2026 — Research Assistant,
+                    Directorate General of Economic Research,
+                    Banco de México.
+                </span>
+
+
+                <span class="update-item">
+                    Mar.–Sep. 2026 — International macroeconomic
+                    and financial analysis, including market
+                    expectations, GDP projections, debt-market
+                    heatmaps, and automated weekly indicators.
+                </span>
+
+
+                <span class="update-item">
+                    Current — Secretary of Dissemination and
+                    Editorial Development, National Editorial
+                    Commission, Movimiento Ciudadano.
+                </span>
+
+
+                <span class="update-item">
+                    Current — Archivo 21, editorial and documentary
+                    project developed through the National Editorial
+                    Commission.
+                </span>
+
+
+                <span class="update-item">
+                    Current — Teaching Assistant, General Economic
+                    History, National Autonomous University of Mexico.
+                </span>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+         ONLY THE SINGLE STOCHASTIC PROCESS
+    ========================================================== -->
+
+    <script>
+
+        const canvas =
+            document.getElementById(
+                "stochasticCanvas"
+            );
+
+        const ctx =
+            canvas.getContext("2d");
+
+
+        let width;
+        let height;
+
+        let x;
+        let y;
+
+        let points = [];
+
+
+        const trailLength = 1500;
+
+        const stepSize = 3.2;
+
+
+        const red = {
+            r: 178,
+            g: 31,
+            b: 45
+        };
+
+
+        function resizeCanvas() {
+
+            width =
+                window.innerWidth;
+
+            height =
+                window.innerHeight;
+
+
+            const dpr =
+                Math.min(
+                    window.devicePixelRatio || 1,
+                    2
+                );
+
+
+            canvas.width =
+                width * dpr;
+
+            canvas.height =
+                height * dpr;
+
+
+            canvas.style.width =
+                width + "px";
+
+            canvas.style.height =
+                height + "px";
+
+
+            ctx.setTransform(
+                dpr,
+                0,
+                0,
+                dpr,
+                0,
+                0
+            );
+
+
+            if (
+                typeof x !== "number" ||
+                typeof y !== "number"
+            ) {
+
+                x =
+                    width * 0.50;
+
+                y =
+                    height * 0.52;
+
+            }
+
+        }
+
+
+        function resetWalk() {
+
+            x =
+                width * 0.50;
+
+            y =
+                height * 0.52;
+
+
+            points = [
+                {
+                    x: x,
+                    y: y
+                }
+            ];
+
+        }
+
+
+        function randomNormal() {
+
+            let u = 0;
+            let v = 0;
+
+
+            while (u === 0) {
+                u = Math.random();
+            }
+
+
+            while (v === 0) {
+                v = Math.random();
+            }
+
+
+            return Math.sqrt(
+                -2 * Math.log(u)
+            ) *
+            Math.cos(
+                2 * Math.PI * v
+            );
+
+        }
+
+
+        function stochasticStep() {
+
+            const dx =
+                randomNormal() *
+                stepSize;
+
+            const dy =
+                randomNormal() *
+                stepSize;
+
+
+            x += dx;
+            y += dy;
+
+
+            if (x < 0) {
+                x = 0;
+            }
+
+            if (x > width) {
+                x = width;
+            }
+
+            if (y < 0) {
+                y = 0;
+            }
+
+            if (y > height) {
+                y = height;
+            }
+
+
+            points.push({
+                x: x,
+                y: y
+            });
+
+
+            if (
+                points.length >
+                trailLength
+            ) {
+
+                points.shift();
+
+            }
+
+        }
+
+
+        function drawStochasticProcess() {
+
+            ctx.clearRect(
+                0,
+                0,
+                width,
+                height
+            );
+
+
+            if (
+                points.length > 1
+            ) {
+
+                ctx.beginPath();
+
+
+                ctx.moveTo(
+                    points[0].x,
+                    points[0].y
+                );
+
+
+                for (
+                    let i = 1;
+                    i < points.length;
+                    i++
+                ) {
+
+                    ctx.lineTo(
+                        points[i].x,
+                        points[i].y
+                    );
+
+                }
+
+
+                ctx.strokeStyle =
+                    `rgba(
+                        ${red.r},
+                        ${red.g},
+                        ${red.b},
+                        0.16
+                    )`;
+
+
+                ctx.lineWidth =
+                    1.15;
+
+
+                ctx.stroke();
+
+            }
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                x,
+                y,
+                2.1,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fillStyle =
+                `rgba(
+                    ${red.r},
+                    ${red.g},
+                    ${red.b},
+                    0.32
+                )`;
+
+
+            ctx.fill();
+
+
+            stochasticStep();
+
+
+            requestAnimationFrame(
+                drawStochasticProcess
+            );
+
+        }
+
+
+        resizeCanvas();
+
+        resetWalk();
+
+
+        window.addEventListener(
+            "resize",
+            resizeCanvas
+        );
+
+
+        drawStochasticProcess();
+
+    </script>
+
+</body>
+</html>
